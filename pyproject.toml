@@ -1,0 +1,10 @@
+[project]
+name = "unidb"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]>=0.114.1",
+    "prisma>=0.15.0",
+]
