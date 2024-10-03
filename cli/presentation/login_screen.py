@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-base_url = os.getenv('BASE_URL')
+BASE_URL = os.getenv('API_BASE_URL')
 
 
 
@@ -16,7 +16,7 @@ def display_login():
 
     #Authentication logic for passwords here to be done later
 
-    response=requests.get(f"{base_url}/students/{email}")
+    response=requests.get(f"{BASE_URL}/students/{email}")
 
         
     if response.status_code==200:
