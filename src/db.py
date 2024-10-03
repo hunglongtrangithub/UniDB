@@ -9,25 +9,33 @@ firebase_admin.initialize_app()
 
 db = firestore.client()
 
-
 STUDENTS = [
     {
+        "student_id": "S001",
         "name": "Alice Johnson",
         "email": "alice@example.com",
         "gpa": 3.5,
         "major": "Physics",
+        "year_of_study": "Sophomore",
+        "address": "123 Elm St, Physics Town",
     },
     {
+        "student_id": "S002",
         "name": "Bob Smith",
         "email": "bob@example.com",
         "gpa": 3.7,
         "major": "Mathematics",
+        "year_of_study": "Junior",
+        "address": "456 Maple St, Math City",
     },
     {
+        "student_id": "S003",
         "name": "Catherine Ray",
         "email": "catherine@example.com",
         "gpa": 3.2,
         "major": "Computer Science",
+        "year_of_study": "Freshman",
+        "address": "789 Oak St, CompSci Village",
     },
 ]
 
@@ -66,7 +74,7 @@ def fetch_student_data():
 
 
 if __name__ == "__main__":
-    # need to run this only once
+    # Clear existing data, add updated data, and fetch to verify
     clear_existing_students()
     add_student_data()
     fetch_student_data()
