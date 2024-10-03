@@ -1,4 +1,4 @@
-from business_logic import student_management
+from data_access import student_repository
 
 def student_dashboard():
     print("1. Add Student")
@@ -9,12 +9,26 @@ def student_dashboard():
     choice = input("Choose an option: ")
 
     if choice == '1':
-        student_management.add_student()
+        student_repository.add_student()
     elif choice == '2':
-        student_management.update_student()
+        student_repository.update_student()
     elif choice == '3':
-        student_management.delete_student()
+        student_repository.delete_student()
     elif choice == '4':
-        student_management.view_student()
+        student_id=input("Enter Student Id:")
+        student_data=student_repository.search_student(student_id)
+        
+        if student_data:
+
+            print(f"Name: {student_data.get('name')}")
+            print(f"Major: {student_data.get('major')}")
+            print(f"Email: {student_data.get('email')}")
+
+        else:
+            print("Student not found.")
+
+
+
+
     elif choice == '5':
-        student_management.list_students()
+        student_repository.list_students()
