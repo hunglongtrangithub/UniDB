@@ -1,13 +1,7 @@
 import requests
-import os
-from dotenv import load_dotenv
+
+
 from data_access import student_repository
-
-load_dotenv()
-
-BASE_URL = os.getenv('API_BASE_URL')
-
-
 
 
 def display_login():
@@ -17,7 +11,8 @@ def display_login():
 
     #Authentication logic for passwords here to be done later
 
-    if student_repository.student_repository(Student_ID)==True:
+    if student_repository.student_search(Student_ID)==True:
+        
         return True
     else:
         return False
