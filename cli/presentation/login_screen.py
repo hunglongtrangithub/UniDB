@@ -9,14 +9,9 @@ def display_login():
     password = input("Enter password: ")
     # Pass login details to Business Logic Layer
 
-    #Authentication logic for passwords here to be done later
+    # Authentication logic for passwords here to be done later
 
-    if student_repository.student_search(Student_ID)==True:
-        
+    if student_repository.search_student(Student_ID):
         return True
     else:
         return False
-
-    
-  
-
