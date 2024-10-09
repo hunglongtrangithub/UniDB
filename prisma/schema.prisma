@@ -1,10 +1,12 @@
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
-  provider = "prisma-client-py"
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
 }
 
 model User {
@@ -12,96 +14,125 @@ model User {
   username   String      @unique
   password   String
   role       Role
-  student    Student?
-  instructor Instructor?
-  staff      Staff?
-  advisor    Advisor?
+  Student    Student?
+  Staff      Staff?
+  Instructor Instructor?
+  Advisor    Advisor?
+  Admin      Admin?
 }
 
 model Student {
-  id          Int          @id @default(autoincrement())
-  user        User         @relation(fields: [userId], references: [id])
-  userId      Int          @unique
-  name        String
-  major       Major        @relation(fields: [majorId], references: [id])
-  majorId     Int
-  enrollments Enrollment[]
-  gpa         Float        @default(0.0)
+  id         Int          @id @default(autoincrement())
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int          @unique
+  Major      Major        @relation(fields: [majorId], references: [id])
+  majorId    Int
+  // TODO: must start with 'U'. May have to leave it application level validation
+  studentId  String
+  Enrollment Enrollment[]
 }
 
 model Instructor {
-  id           Int                  @id @default(autoincrement())
-  user         User                 @relation(fields: [userId], references: [id])
-  userId       Int                  @unique
-  name         String
-  department   Department           @relation(fields: [departmentId], references: [id])
-  departmentId Int
-  teachings    TeachingAssignment[]
-}
-
-model Staff {
-  id           Int        @id @default(autoincrement())
-  user         User       @relation(fields: [userId], references: [id])
-  userId       Int        @unique
-  name         String
-  department   Department @relation(fields: [departmentId], references: [id])
-  departmentId Int
+  id                 Int                  @id @default(autoincrement())
+  user               User                 @relation(fields: [userId], references: [id])
+  userId             Int                  @unique
+  Department         Department           @relation(fields: [departmentId], references: [id])
+  departmentId       Int
+  TeachingAssignment TeachingAssignment[]
 }
 
 model Advisor {
   id          Int          @id @default(autoincrement())
   user        User         @relation(fields: [userId], references: [id])
   userId      Int          @unique
-  name        String
   departments Department[]
 }
 
-model Department {
-  id          Int          @id @default(autoincrement())
-  name        String
-  majors      Major[]
-  staff       Staff[]
-  instructors Instructor[]
-  advisors    Advisor[]
+model Staff {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int        @unique
+  Department   Department @relation(fields: [departmentId], references: [id])
+  departmentId Int
+}
+
+model Admin {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
 }
 
 model Major {
-  id           Int        @id @default(autoincrement())
-  name         String
-  department   Department @relation(fields: [departmentId], references: [id])
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  department   Department  @relation("ExtraMajors", fields: [departmentId], references: [id])
+  uniqueIn     Department? @relation("UniqueMajor")
   departmentId Int
   students     Student[]
 }
 
 model Course {
-  id          Int                  @id @default(autoincrement())
-  prefix      String
-  number      String
-  credits     Int
-  teachings   TeachingAssignment[]
-  enrollments Enrollment[]
+  id                 Int                  @id @default(autoincrement())
+  prefix             String
+  number             Int
+  name               String
+  // TODO: enfore check for credits only from 1 to 4. May have to leave it application level validation
+  credits            Int
+  Department         Department           @relation(fields: [departmentId], references: [id])
+  departmentId       Int
+  Enrollment         Enrollment[]
+  TeachingAssignment TeachingAssignment[]
 
   @@unique([prefix, number])
 }
 
+model Enrollment {
+  id         Int      @id @default(autoincrement())
+  semester   Semester @relation(fields: [semesterId], references: [id])
+  semesterId Int
+  student    Student  @relation(fields: [studentId], references: [id])
+  studentId  Int
+  course     Course   @relation(fields: [courseId], references: [id])
+  courseId   Int
+  grade      Grade?
+
+  // a student cannot enroll in the same course twice in the same semester
+  @@unique([studentId, courseId, semesterId])
+}
+
 model TeachingAssignment {
   id           Int        @id @default(autoincrement())
+  semester     Semester   @relation(fields: [semesterId], references: [id])
+  semesterId   Int
   instructor   Instructor @relation(fields: [instructorId], references: [id])
   instructorId Int
   course       Course     @relation(fields: [courseId], references: [id])
   courseId     Int
-  semester     Semester
-  classTime    String
+
+  // an instructor cannot teach the same course twice in the same semester
+  @@unique([instructorId, courseId, semesterId])
 }
 
-model Enrollment {
-  id        Int      @id @default(autoincrement())
-  student   Student  @relation(fields: [studentId], references: [id])
-  studentId Int
-  course    Course   @relation(fields: [courseId], references: [id])
-  courseId  Int
-  semester  Semester
-  grade     Grade?
+model Semester {
+  id                 Int                  @id @default(autoincrement())
+  year               Int
+  season             Season
+  Enrollment         Enrollment[]
+  TeachingAssignment TeachingAssignment[]
+
+  @@unique([year, season])
+}
+
+model Department {
+  id            Int          @id @default(autoincrement())
+  name          String
+  uniqueMajor   Major        @relation("UniqueMajor", fields: [uniqueMajorId], references: [id])
+  uniqueMajorId Int          @unique
+  extraMajors   Major[]      @relation("ExtraMajors")
+  staff         Staff[]
+  instructors   Instructor[]
+  advisors      Advisor[]
+  courses       Course[]
 }
 
 model OperationLog {
@@ -131,9 +162,9 @@ enum Grade {
   U
 }
 
-enum Semester {
-  SPRING
+enum Season {
   FALL
+  SPRING
   SUMMER
 }
 
