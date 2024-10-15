@@ -1,5 +1,8 @@
-from textual import on, log
+from dataclasses import dataclass
+
+from textual import on, log, work
 from textual.app import ComposeResult
+from textual.message import Message
 from textual.widgets import Button, Input, Markdown, Label
 from textual.containers import Container
 from textual.screen import Screen
@@ -22,9 +25,24 @@ Requirements for password:
 
 """
 
+password_validator = PasswordValidator()
+# fmt: off
+password_validator\
+.min(8)\
+.max(100)\
+.has().uppercase()\
+.has().lowercase()\
+.has().digits()\
+.has().symbols()
+# fmt: on
+
 
 class SignupScreen(Screen):
     """Signup screen with input fields and submit button."""
+
+    @dataclass
+    class SignupStatus(Message):
+        status: str
 
     def compose(self) -> ComposeResult:
         """Compose the layout of the signup screen."""
@@ -61,51 +79,48 @@ class SignupScreen(Screen):
             id="signup_container",
         )
 
-    def check_email(self, email: str) -> str | None:
-        """Validate email address. Return normalized email if valid, else None."""
+    @work(thread=True)
+    def check_email(self, email: str) -> None:
+        """Validate email address"""
         try:
-            emailinfo = validate_email(email, check_deliverability=False)
-            return emailinfo.normalized
+            validate_email(email, check_deliverability=True)
         except EmailNotValidError as e:
+            self.app.call_from_thread(self.email_error.update, "Invalid email address.")
             log.info(f"Email is not valid: {str(e)}")
-            return None
+        else:
+            self.app.call_from_thread(self.email_error.update, "")
 
-    def check_password(self, password: str) -> bool:
-        """Validate password. Return True if valid, else False."""
-        password_validator = PasswordValidator()
-        password_validator.min(8).max(
-            100
-        ).has().uppercase().has().lowercase().has().digits().has().symbols()
-        return password_validator.validate(password)
+    @work(thread=True)
+    def check_password(self, password: str) -> None:
+        """Validate password"""
+        is_valid = password_validator.validate(password)
+        if not is_valid:
+            self.app.call_from_thread(self.password_error.update, "Invalid password.")
+        else:
+            self.app.call_from_thread(self.password_error.update, "")
 
     @on(Input.Changed, "#email_input")
     def show_email_error(self):
         email_input = self.email_input.value
         if not email_input:
+            self.email_error.update("Field is required.")
             return
-        email = self.check_email(email_input)
-        if not email:
-            self.email_error.update("Invalid email address.")
-        else:
-            self.email_error.update("")
+        self.check_email(email_input)
 
     @on(Input.Changed, "#password_input")
     def show_password_error(self):
         password_input = self.password_input.value
         if not password_input:
+            self.password_error.update("Field is required.")
             return
-        log.debug(f"Password input: {password_input}")
-        if not self.check_password(password_input):
-            self.password_error.update("Invalid password.")
-        else:
-            self.password_error.update("")
+        self.check_password(password_input)
 
     @on(Input.Changed, "#confirm_password_input")
     def show_confirm_password_error(self):
         confirm_password_input = self.confirm_password_input.value
         if not confirm_password_input:
+            self.confirm_password_error.update("Field is required.")
             return
-        log.debug(f"Confirm password input: {confirm_password_input}")
         password_input = self.query_one("#password_input", Input).value
         if password_input != confirm_password_input:
             self.confirm_password_error.update("Passwords do not match.")
@@ -122,27 +137,40 @@ class SignupScreen(Screen):
         if not email_input or not password_input or not confirm_password_input:
             self.notify("All fields are required.", severity="error")
             return
-
-        normalized_email = self.check_email(email_input)
-        if not normalized_email:
-            self.notify("Invalid email address.", severity="error")
-            return
-        if not self.check_password(password_input):
-            self.notify("Invalid password.", severity="error")
-            return
-        if password_input != confirm_password_input:
-            self.notify("Passwords do not match.", severity="error")
+        if not (
+            self.email_error.renderable == ""
+            and self.password_error.renderable == ""
+            and self.confirm_password_error.renderable == ""
+        ):
+            self.notify("Please fix the errors above.", severity="error")
             return
 
-        try:
-            sign_up(normalized_email, password_input)
+        email_info = validate_email(email_input, check_deliverability=False)
+        normalized_email = email_info.normalized
+        log.debug(f"Normalized email: {normalized_email}")
+        self.do_signup(normalized_email, password_input)
+
+    @on(SignupStatus)
+    def handle_signup_status(self, message: SignupStatus) -> None:
+        """Handle signup status message."""
+        if message.status == "success":
             self.notify("Registration successful! Please log in.")
             self.app.switch_screen(LoginScreen())
-        except Exception as e:
-            log.error(f"Signup error: {str(e)}")
+        else:
             self.notify(
                 "Invalid email or password. Please try again.", severity="error"
             )
+
+    @work(thread=True)
+    def do_signup(self, email: str, password: str) -> None:
+        """Sign up with email and password."""
+        try:
+            log.info(f"Signing up with email: {email}")
+            sign_up(email, password)
+            self.post_message(self.SignupStatus("success"))
+        except Exception as e:
+            log.error(f"Signup error: {str(e)}")
+            self.post_message(self.SignupStatus("error"))
 
     @on(Button.Pressed, "#switch_to_login_button")
     def switch_to_login(self) -> None:
