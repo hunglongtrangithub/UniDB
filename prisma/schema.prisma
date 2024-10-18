@@ -10,56 +10,49 @@ generator client {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  username   String      @unique
-  password   String
-  role       Role
-  Student    Student?
-  Staff      Staff?
-  Instructor Instructor?
-  Advisor    Advisor?
-  Admin      Admin?
+  id         String      @id @db.Uuid
+  firstName  String
+  lastName   String
+  userType   UserType
+  student    Student?
+  staff      Staff?
+  instructor Instructor?
+  advisor    Advisor?
 }
 
 model Student {
-  id         Int          @id @default(autoincrement())
-  user       User         @relation(fields: [userId], references: [id])
-  userId     Int          @unique
-  Major      Major        @relation(fields: [majorId], references: [id])
-  majorId    Int
+  id          Int          @id @default(autoincrement())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      String       @unique
+  major       Major        @relation(fields: [majorId], references: [id])
+  majorId     Int
   // TODO: must start with 'U'. May have to leave it application level validation
-  studentId  String
-  Enrollment Enrollment[]
+  studentId   String
+  enrollments Enrollment[]
 }
 
 model Instructor {
-  id                 Int                  @id @default(autoincrement())
-  user               User                 @relation(fields: [userId], references: [id])
-  userId             Int                  @unique
-  Department         Department           @relation(fields: [departmentId], references: [id])
-  departmentId       Int
-  TeachingAssignment TeachingAssignment[]
+  id                  Int                  @id @default(autoincrement())
+  user                User                 @relation(fields: [userId], references: [id])
+  userId              String               @unique
+  department          Department           @relation(fields: [departmentId], references: [id])
+  departmentId        Int
+  teachingAssignments TeachingAssignment[]
 }
 
 model Advisor {
   id          Int          @id @default(autoincrement())
   user        User         @relation(fields: [userId], references: [id])
-  userId      Int          @unique
+  userId      String       @unique
   departments Department[]
 }
 
 model Staff {
   id           Int        @id @default(autoincrement())
   user         User       @relation(fields: [userId], references: [id])
-  userId       Int        @unique
-  Department   Department @relation(fields: [departmentId], references: [id])
+  userId       String     @unique
+  department   Department @relation(fields: [departmentId], references: [id])
   departmentId Int
-}
-
-model Admin {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
 }
 
 model Major {
@@ -72,16 +65,16 @@ model Major {
 }
 
 model Course {
-  id                 Int                  @id @default(autoincrement())
-  prefix             String
-  number             Int
-  name               String
+  id                  Int                  @id @default(autoincrement())
+  prefix              String
+  number              Int
+  name                String
   // TODO: enfore check for credits only from 1 to 4. May have to leave it application level validation
-  credits            Int
-  Department         Department           @relation(fields: [departmentId], references: [id])
-  departmentId       Int
-  Enrollment         Enrollment[]
-  TeachingAssignment TeachingAssignment[]
+  credits             Int
+  department          Department           @relation(fields: [departmentId], references: [id])
+  departmentId        Int
+  enrollments         Enrollment[]
+  teachingAssignments TeachingAssignment[]
 
   @@unique([prefix, number])
 }
@@ -114,11 +107,11 @@ model TeachingAssignment {
 }
 
 model Semester {
-  id                 Int                  @id @default(autoincrement())
-  year               Int
-  season             Season
-  Enrollment         Enrollment[]
-  TeachingAssignment TeachingAssignment[]
+  id                  Int                  @id @default(autoincrement())
+  year                Int
+  season              Season
+  enrollments         Enrollment[]
+  teachingAssignments TeachingAssignment[]
 
   @@unique([year, season])
 }
@@ -135,20 +128,11 @@ model Department {
   courses       Course[]
 }
 
-model OperationLog {
-  id        Int           @id @default(autoincrement())
-  timestamp DateTime      @default(now())
-  userId    Int
-  operation OperationType
-  details   String
-}
-
-enum Role {
+enum UserType {
   STUDENT
   INSTRUCTOR
   STAFF
   ADVISOR
-  ADMIN
 }
 
 enum Grade {
@@ -166,11 +150,4 @@ enum Season {
   FALL
   SPRING
   SUMMER
-}
-
-enum OperationType {
-  CREATE
-  READ
-  UPDATE
-  DELETE
 }
