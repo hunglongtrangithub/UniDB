@@ -1,4 +1,5 @@
 CREATE TYPE public.grade AS ENUM ('A', 'B', 'C', 'D', 'F', 'I', 'S', 'U');
+
 CREATE TYPE public.season AS ENUM ('F', 'S', 'U');  -- Fall, Spring, Summer
 
 -- TABLES FOR APPLICATIONS
@@ -6,7 +7,7 @@ CREATE TYPE public.season AS ENUM ('F', 'S', 'U');  -- Fall, Spring, Summer
 CREATE TABLE public.departments (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name VARCHAR(255) NOT NULL UNIQUE,
-  building NVARCHAR(255),
+  building VARCHAR(255),
   office VARCHAR(255),
 
   UNIQUE (building, office)
@@ -37,12 +38,13 @@ CREATE TABLE public.instructors (
 );
 
 CREATE TABLE public.advisors (
-  id UUID PRIMARY KEY REFERENCES public.users (id) ON DELETE CASCADE,
+  id UUID PRIMARY KEY REFERENCES public.users (id) ON DELETE CASCADE
 );
+
 -- Advisors can work for more than one department
 CREATE TABLE public.advisor_department (
-  advisor_id UUID REFERENCES public.advisors (id) ON DELETE CASCADE,
-  department_id BIGINT REFERENCES public.departments (id) ON DELETE CASCADE,
+  advisor_id UUID NOT NULL REFERENCES public.advisors (id) ON DELETE CASCADE,
+  department_id BIGINT NOT NULL REFERENCES public.departments (id) ON DELETE CASCADE,
   PRIMARY KEY (advisor_id, department_id)
 );
 
@@ -57,7 +59,7 @@ CREATE TABLE public.courses (
   number VARCHAR(10) NOT NULL,
   name VARCHAR(255) NOT NULL,
   credits INT NOT NULL CHECK (credits >= 1 AND credits <= 4),
-  department_id NOT NULL BIGINT REFERENCES public.departments (id) ON DELETE RESTRICT,
+  department_id BIGINT NOT NULL REFERENCES public.departments (id) ON DELETE RESTRICT,
   UNIQUE (prefix, number)
 );
 
@@ -88,6 +90,7 @@ CREATE TABLE public.course_enrollments (
 
 -- Create custom types for roles and permissions
 CREATE TYPE public.app_role AS ENUM ('student', 'instructor', 'advisor', 'staff');
+
 CREATE TYPE public.app_permission AS ENUM (
   'manage_department_data',
   'cannot_see_course_enrollments',
@@ -131,7 +134,7 @@ VALUES
 INSERT INTO public.role_permissions (role, permission)
 VALUES
   ('advisor', 'manage_student_enrollments'),
-  ('advisor', 'perform_what_if_analysis');
+  ('advisor', 'perform_what_if_analysis'),
   ('advisor', 'access_student_own_data');
 
 -- Student

@@ -1,6 +1,9 @@
 -- Add a new row in the users and user_roles table when a new user is created in the auth schema
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER
+RETURNS trigger 
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
 AS $$
 BEGIN
   -- Insert the new user into the users table
@@ -9,23 +12,20 @@ BEGIN
   VALUES (
       NEW.id,
       NEW.raw_user_meta_data ->> 'first_name',
-      NEW.raw_user_meta_data ->> 'last_name',
+      NEW.raw_user_meta_data ->> 'last_name'
   );
 
   -- Insert the new user's role into the user_roles table
   INSERT INTO public.user_roles (user_id, role)
   VALUES (
       NEW.id,
-      NEW.raw_user_meta_data ->> 'role',
+      NEW.raw_user_meta_data ->> 'role'
   );
 
   RETURN NEW;
 END;
-$$
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = ''
-;
+$$;
+
 CREATE TRIGGER on_auth_user_created
 AFTER INSERT ON auth.users
 FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
@@ -35,9 +35,9 @@ FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 CREATE OR REPLACE FUNCTION public.custom_access_token_hook(event jsonb)
 RETURNS jsonb
 LANGUAGE plpgsql
+STABLE
 SECURITY DEFINER
 SET search_path = public
-STABLE
 AS $$
 DECLARE
     claims jsonb;
@@ -85,7 +85,12 @@ USING (TRUE);
 CREATE OR REPLACE FUNCTION public.authorize(
     requested_permission public.app_permission
 )
-RETURNS BOOLEAN AS $$
+RETURNS BOOLEAN 
+LANGUAGE plpgsql
+STABLE
+SECURITY DEFINER
+SET search_path = ''
+AS $$
 DECLARE
     has_permission INT;
 BEGIN
@@ -98,4 +103,4 @@ BEGIN
     -- NOTE: has_permission will be 1 if the user has the requested permission
     RETURN has_permission > 0;
 END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = public;
+$$;

@@ -3,7 +3,7 @@ CREATE UNIQUE INDEX unique_major_per_department ON public.majors (name, departme
 
 -- Enforce that an instructor can teach courses of one department only (Constraint 3.1)
 CREATE OR REPLACE FUNCTION enforce_instructor_department()
-RETURNS TRIGGER
+RETURNS trigger
 AS $$
 BEGIN
     IF NOT EXISTS (
@@ -26,7 +26,7 @@ FOR EACH ROW EXECUTE FUNCTION enforce_instructor_department();
 
 -- Trigger function to prevent students from enrolling in the same course twice in the same semester
 CREATE OR REPLACE FUNCTION prevent_duplicate_course_enrollment()
-RETURNS TRIGGER
+RETURNS trigger
 AS $$
 BEGIN
     IF EXISTS (
