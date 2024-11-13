@@ -1,9 +1,12 @@
 -- Enforce that each department must have at least one unique major (Constraint 5.1)
 CREATE UNIQUE INDEX unique_major_per_department ON public.majors (name, department_id) WHERE is_unique = TRUE;
 
+
 -- Enforce that an instructor can teach courses of one department only (Constraint 3.1)
 CREATE OR REPLACE FUNCTION enforce_instructor_department()
 RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = ''
 AS $$
 BEGIN
     IF NOT EXISTS (
@@ -16,9 +19,8 @@ BEGIN
     END IF;
     RETURN NEW;
 END;
-$$
-LANGUAGE plpgsql
-;
+$$;
+
 CREATE TRIGGER check_instructor_department
 BEFORE INSERT OR UPDATE ON public.course_offerings
 FOR EACH ROW EXECUTE FUNCTION enforce_instructor_department();
@@ -27,6 +29,8 @@ FOR EACH ROW EXECUTE FUNCTION enforce_instructor_department();
 -- Trigger function to prevent students from enrolling in the same course twice in the same semester
 CREATE OR REPLACE FUNCTION prevent_duplicate_course_enrollment()
 RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = ''
 AS $$
 BEGIN
     IF EXISTS (
@@ -40,9 +44,8 @@ BEGIN
     END IF;
     RETURN NEW;
 END;
-$$
-LANGUAGE plpgsql
-;
+$$;
+
 CREATE TRIGGER check_duplicate_course_enrollment
 BEFORE INSERT ON public.course_enrollments
 FOR EACH ROW EXECUTE FUNCTION prevent_duplicate_course_enrollment();

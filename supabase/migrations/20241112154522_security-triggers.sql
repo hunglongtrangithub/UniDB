@@ -19,7 +19,7 @@ BEGIN
   INSERT INTO public.user_roles (user_id, role)
   VALUES (
       NEW.id,
-      NEW.raw_user_meta_data ->> 'role'
+      (NEW.raw_user_meta_data ->> 'role')::public.app_role
   );
 
   RETURN NEW;
@@ -37,13 +37,13 @@ RETURNS jsonb
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
-SET search_path = public
+SET search_path = ''
 AS $$
 DECLARE
     claims jsonb;
     user_role public.app_role;
 BEGIN
-    -- Fetch all roles for the user
+    -- Fetch the user's role
     SELECT role INTO user_role FROM public.user_roles WHERE user_id = (event->>'user_id')::uuid;
 
     claims := event->'claims';

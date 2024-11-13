@@ -1,28 +1,20 @@
 -- ENABLE ROW LEVEL SECURITY
 
--- Revoke default privileges
-REVOKE ALL ON TABLE public.students FROM public;
-REVOKE ALL ON TABLE public.instructors FROM public;
-REVOKE ALL ON TABLE public.advisors FROM public;
-REVOKE ALL ON TABLE public.staff FROM public;
-REVOKE ALL ON TABLE public.courses FROM public;
-REVOKE ALL ON TABLE public.course_offerings FROM public;
-REVOKE ALL ON TABLE public.course_enrollments FROM public;
-REVOKE ALL ON TABLE public.majors FROM public;
-REVOKE ALL ON TABLE public.departments FROM public;
-REVOKE ALL ON TABLE public.users FROM public;
-
 -- Enable Row-Level Security (RLS) on relevant tables
+ALTER TABLE public.departments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.majors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.instructors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.advisors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.advisor_department ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.staff ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.semesters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.course_offerings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.course_enrollments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.majors ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.departments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.role_permissions ENABLE ROW LEVEL SECURITY;
 
 -- NOTE: Assume that Supabase does not grant any privileges to the authenticated role on application-defined tables by default
 
