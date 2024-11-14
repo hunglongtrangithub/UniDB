@@ -75,8 +75,10 @@ CREATE TABLE public.course_offerings (
   course_id BIGINT NOT NULL REFERENCES public.courses(id) ON DELETE RESTRICT,
   semester_id BIGINT NOT NULL REFERENCES public.semesters(id) ON DELETE RESTRICT,
   instructor_id UUID NOT NULL REFERENCES public.instructors(id) ON DELETE RESTRICT,
+  -- days: M, T, W, R, F, S, U
   schedule JSONB NOT NULL, -- e.g., {"days": "MW", "time": "10:00-11:00"}
 
+  -- NOTE: Assuming that an instructor can only teach a course in 1 offering once in a semester
   CONSTRAINT unique_instructor_course_semester UNIQUE (semester_id, course_id, instructor_id)
 );
 

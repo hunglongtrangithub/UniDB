@@ -2,7 +2,7 @@
 CREATE UNIQUE INDEX unique_major_per_department ON public.majors (name, department_id) WHERE is_unique = TRUE;
 
 
--- Enforce that an instructor can teach courses of one department only (Constraint 3.1)
+-- Enforce that an instructor can teach courses of their department only (Constraint 3.1)
 CREATE OR REPLACE FUNCTION enforce_instructor_department()
 RETURNS trigger
 LANGUAGE plpgsql
