@@ -11,7 +11,7 @@ AS $$
 BEGIN
     IF NOT EXISTS (
         SELECT 1
-        FROM public.users u
+        FROM public.instructors u
         JOIN public.courses c ON c.department_id = u.department_id
         WHERE u.id = NEW.instructor_id AND c.id = NEW.course_id
     ) THEN

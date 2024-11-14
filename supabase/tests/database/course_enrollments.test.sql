@@ -42,7 +42,7 @@ VALUES ('00000000-0000-0000-0000-000000000001', 'U12345678', (SELECT id FROM pub
 
 -- TEST default value of grade in course_enrollments
 
--- (5) Check if the default value of grade in course_enrollments is "I"
+-- (1) Check if the default value of grade in course_enrollments is "I"
 INSERT INTO public.course_enrollments (student_id, course_offering_id)
 VALUES ('00000000-0000-0000-0000-000000000001', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '101') AND semester_id = (SELECT id FROM public.semesters WHERE year = 2024 AND season = 'F')));
 SELECT is(
