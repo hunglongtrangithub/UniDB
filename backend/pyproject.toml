@@ -11,11 +11,9 @@ dependencies = [
     "prisma>=0.15.0",
     "python-dotenv>=1.0.1",
     "supabase>=2.9.0",
-    "textual>=0.82.0",
 ]
 
 [tool.uv]
 dev-dependencies = [
     "ruff>=0.6.9",
-    "textual-dev>=1.6.1",
 ]
