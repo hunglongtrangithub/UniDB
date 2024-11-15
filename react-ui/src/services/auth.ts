@@ -17,7 +17,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
  */
 export const signUp = async (
   email: string,
-  password: string,
+  password: string
 ): Promise<AuthResponse> => {
   const { data, error } = await supabase.auth.signUp({
     email: email,
@@ -41,7 +41,7 @@ export const signUp = async (
  */
 export const logIn = async (
   email: string,
-  password: string,
+  password: string
 ): Promise<AuthResponse> => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
