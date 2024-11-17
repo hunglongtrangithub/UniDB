@@ -100,6 +100,8 @@ function Navbar({ userRole, setView }) {
                     handleCloseNavMenu();
                     if (page === "Personal Information") {
                       setView("personalInfo");
+                    } else if (page === "What-If Analysis") {
+                      setView("whatIfAnalysis");
                     } else {
                       setView("dashboard"); // Default or add logic for other views
                     }
@@ -117,6 +119,8 @@ function Navbar({ userRole, setView }) {
                 onClick={() => {
                   if (page === "Personal Information") {
                     setView("personalInfo");
+                  } else if (page === "What-If Analysis") {
+                    setView("whatIfAnalysis");
                   } else {
                     setView("dashboard");
                   }
