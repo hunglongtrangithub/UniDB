@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import StudentTable from "../features/students/components/StudentTable";
+import InstructorTable from "../features/instructors/components/InstructorTable";
+import PersonalInfo from "../components/PersonalInfo";
+import StaffTable from "../features/staff/components/StaffTable";
 
-// User role set to student now for testing
-// FIX: User role should be set based on the type of user logged in
-const userRole = "student";
+interface DashboardProps {
+  userRole: "student" | "instructor" | "advisor" | "staff" | "admin";
+}
 
-// FIX: dashboard should display different content according to the type of user logged in
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
+  const [view, setView] = useState<"dashboard" | "personalInfo">("dashboard");
+
+  const renderContent = () => {
+    if (view === "personalInfo") {
+      return <PersonalInfo userRole={userRole} />;
+    }
+
+    if (view === "dashboard") {
+      if (userRole === "student") return <StudentTable />;
+      if (userRole === "instructor") return <InstructorTable />;
+      if (userRole === "staff") return <StaffTable />;
+    }
+
+    return <div>No data available for this role.</div>;
+  };
+
   return (
     <div className="dashboard">
-      <Navbar userRole={userRole} />
-      {userRole == "student" ? <StudentTable /> : null}
+      <Navbar userRole={userRole} setView={setView} />
+      {renderContent()}
     </div>
   );
 };
