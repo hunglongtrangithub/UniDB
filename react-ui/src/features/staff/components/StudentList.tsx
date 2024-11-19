@@ -25,7 +25,7 @@ interface Student {
   enrolledCourses: string[];
 }
 
-const StaffDashboard: React.FC = () => {
+const StudentList: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([
     {
       id: 1,
@@ -244,4 +244,4 @@ const StaffDashboard: React.FC = () => {
   );
 };
 
-export default StaffDashboard;
+export default StudentList;

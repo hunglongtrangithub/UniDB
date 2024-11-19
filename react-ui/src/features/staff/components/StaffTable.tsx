@@ -1,7 +1,8 @@
 import React from "react";
 import CourseList from "./CourseList";
 import InstructorList from "./InstructorList";
-import StudentList from "../../staff/components/StudentList";
+import StudentList from "./StudentList";
+import DepartmentInfo from "./DepartmentInfo";
 
 const StaffTable: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const StaffTable: React.FC = () => {
       <CourseList />
       <InstructorList />
       <StudentList />
-      <h2>Department Information</h2>
+      <DepartmentInfo />
     </div>
   );
 };
