@@ -29,7 +29,6 @@ const StaffDashboard: React.FC = () => {
       description: "Update non-GPA-related student information.",
     },
   ];
-
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" gutterBottom>

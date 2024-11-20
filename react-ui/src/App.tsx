@@ -5,6 +5,8 @@ import Welcome from "./routes/Welcome";
 import Dashboard from "./routes/Dashboard";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
+import WhatIfGPAAnalysis from "./routes/WhatIfGPAAnalysis";
+import TranscriptView from "./routes/TranscriptView";
 import { supabase } from "./services/client";
 import { setUser, clearUser } from "./reducers/userReducer";
 
@@ -37,6 +39,8 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/what-if-analysis" element={<WhatIfGPAAnalysis />} />
+        <Route path="/transcript-view" element={<TranscriptView />} />
       </Routes>
     </Router>
   );
