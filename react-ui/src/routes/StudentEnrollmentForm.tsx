@@ -6,6 +6,7 @@ import {
   Select,
   MenuItem,
   Button,
+  Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -15,21 +16,46 @@ const StudentEnrollmentForm: React.FC = () => {
   // States for form inputs
   const [studentSearch, setStudentSearch] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Sample data for courses
   const courseOptions = [
-    { value: "offering1", label: "Course 1 - Fall 2023" },
-    { value: "offering2", label: "Course 2 - Spring 2024" },
+    { value: "offering1", label: "Course 1 - Fall 2023", capacity: 30, enrolled: 25 },
+    { value: "offering2", label: "Course 2 - Spring 2024", capacity: 20, enrolled: 20 },
   ];
 
+  // Sample data for validation
+  const studentData = {
+    id: "student123",
+    department: "Computer Science",
+  };
+  const advisorDepartment = "Computer Science";
+
   const handleEnrollClick = () => {
-    if (!studentSearch || !selectedCourse) {
-      alert("Please fill in all fields before submitting.");
-    } else {
-      // Simulate enrollment logic
-      alert(`Enrolled ${studentSearch} in ${selectedCourse}`);
-      // You can add your enrollment logic/API call here
+    setErrorMessage(null);
+
+    // E1: Department Mismatch
+    if (studentSearch !== studentData.id || studentData.department !== advisorDepartment) {
+      setErrorMessage("Error: Student is not in your department.");
+      return;
     }
+
+    // E2: Duplicate Enrollment
+    if (studentSearch === "student123" && selectedCourse === "offering1") {
+      setErrorMessage("Error: Student is already enrolled in this course.");
+      return;
+    }
+
+    // E3: Course Full
+    const course = courseOptions.find((c) => c.value === selectedCourse);
+    if (course && course.enrolled >= course.capacity) {
+      setErrorMessage("Error: Course capacity reached.");
+      return;
+    }
+
+    // Simulate enrollment success
+    alert(`Successfully enrolled ${studentSearch} in ${selectedCourse}`);
+    // Enrollment logic/API call can be added here
   };
 
   return (
@@ -46,6 +72,13 @@ const StudentEnrollmentForm: React.FC = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Enroll Student in Course
       </Typography>
+
+      {/* Error Message */}
+      {errorMessage && (
+        <Alert severity="error" sx={{ marginBottom: 3 }}>
+          {errorMessage}
+        </Alert>
+      )}
 
       {/* Student Search Field */}
       <Box sx={{ marginBottom: 3 }}>
@@ -76,7 +109,7 @@ const StudentEnrollmentForm: React.FC = () => {
           </MenuItem>
           {courseOptions.map((course) => (
             <MenuItem key={course.value} value={course.value}>
-              {course.label}
+              {`${course.label} (Capacity: ${course.enrolled}/${course.capacity})`}
             </MenuItem>
           ))}
         </Select>
@@ -124,4 +157,3 @@ const StudentEnrollmentForm: React.FC = () => {
 };
 
 export default StudentEnrollmentForm;
-
