@@ -6,6 +6,8 @@ import Dashboard from "./routes/Dashboard";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import WhatIfGPAAnalysis from "./routes/WhatIfGPAAnalysis";
+import TeachingScheduleView from "./routes/TeachingScheduleView";
+import CourseEnrollmentView from "./routes/CourseEnrollmentView";
 import TranscriptView from "./routes/TranscriptView";
 import { supabase } from "./services/client";
 import { setUser, clearUser } from "./reducers/userReducer";
@@ -15,6 +17,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth event:", event);
       if (event === "SIGNED_IN") {
         if (session) {
           dispatch(
@@ -43,6 +46,8 @@ const App: React.FC = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/what-if-analysis" element={<WhatIfGPAAnalysis />} />
         <Route path="/transcript-view" element={<TranscriptView />} />
+        <Route path="/teaching-schedule-view" element={<TeachingScheduleView />} />
+        <Route path="/course-enrollments-view" element={<CourseEnrollmentView />} />
       </Routes>
     </Router>
   );
