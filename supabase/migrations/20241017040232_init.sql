@@ -23,7 +23,10 @@ CREATE TABLE public.majors (
 CREATE TABLE public.users (
   id UUID PRIMARY KEY REFERENCES auth.users (id) ON DELETE CASCADE,
   first_name VARCHAR(255),
-  last_name VARCHAR(255)
+  last_name VARCHAR(255),
+  email VARCHAR(255),
+  phone VARCHAR(20),
+  address VARCHAR(255)
 );
 
 CREATE TABLE public.students (
@@ -70,6 +73,14 @@ CREATE TABLE public.semesters (
   UNIQUE (year, season)
 );
 
+CREATE TABLE public.rooms (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  building VARCHAR(255) NOT NULL,
+  room_number VARCHAR(50) NOT NULL,
+  capacity INT,
+  UNIQUE (building, room_number)
+);
+
 CREATE TABLE public.course_offerings (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   course_id BIGINT NOT NULL REFERENCES public.courses(id) ON DELETE RESTRICT,
@@ -77,6 +88,7 @@ CREATE TABLE public.course_offerings (
   instructor_id UUID NOT NULL REFERENCES public.instructors(id) ON DELETE RESTRICT,
   -- days: M, T, W, R, F, S, U
   schedule JSONB NOT NULL, -- e.g., {"days": "MW", "time": "10:00-11:00"}
+  room_id BIGINT REFERENCES public.rooms(id) ON DELETE SET NULL,
 
   -- NOTE: Assuming that an instructor can only teach a course in 1 offering once in a semester
   CONSTRAINT unique_instructor_course_semester UNIQUE (semester_id, course_id, instructor_id)
@@ -84,11 +96,16 @@ CREATE TABLE public.course_offerings (
 
 CREATE TABLE public.course_enrollments (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  -- No students can be deleted if they already have enrollments
   student_id UUID NOT NULL REFERENCES public.students(id) ON DELETE RESTRICT,
   course_offering_id BIGINT NOT NULL REFERENCES public.course_offerings(id) ON DELETE RESTRICT,
   grade public.grade DEFAULT 'I'::public.grade,
   UNIQUE (student_id, course_offering_id)
 );
+
+-- (from public.course_offerings) if a course offering exists, its course cannot be removed
+-- (from public.course_enrollments) if a course enrollment exists, its course offering cannot be removed
+-- --> if a course enrollment exists, its course cannot be removed
 
 -- Create custom types for roles and permissions
 CREATE TYPE public.app_role AS ENUM ('student', 'instructor', 'advisor', 'staff');

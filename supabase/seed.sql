@@ -27,6 +27,10 @@
 -- SEMESTERS
 -- add 1 semester to public.semesters: (2024, 'F')
 
+-- ROOMS
+-- add 3 rooms to each department (total 9 rooms)
+-- add to table public.rooms (building, room_number, capacity)
+
 -- COURSE OFFERINGS
 -- each instructor should be teaching 3 courses in their department
 -- add 1 course offering for each course in the semester (total 9 course offerings)
@@ -119,18 +123,31 @@ VALUES
 INSERT INTO public.semesters (year, season)
 VALUES (2024, 'F');
 
--- COURSE OFFERINGS
-INSERT INTO public.course_offerings (course_id, semester_id, instructor_id, schedule)
+-- ROOMS
+INSERT INTO public.rooms (building, room_number, capacity)
 VALUES 
-((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '101'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "10:00-11:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '102'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "11:00-12:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '103'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "12:00-13:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '101'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "10:00-11:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '102'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "11:00-12:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '103'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "12:00-13:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '101'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "10:00-11:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '102'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "11:00-12:00"}'::jsonb),
-((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '103'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "12:00-13:00"}'::jsonb);
+('Science Building', '101', 30),
+('Science Building', '102', 25),
+('Science Building', '103', 20),
+('Technology Building', '201', 30),
+('Technology Building', '202', 25),
+('Technology Building', '203', 20),
+('Security Building', '301', 30),
+('Security Building', '302', 25),
+('Security Building', '303', 20);
+
+-- COURSE OFFERINGS
+INSERT INTO public.course_offerings (course_id, semester_id, instructor_id, schedule, room_id)
+VALUES 
+((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '101'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "10:00-11:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Science Building' AND room_number = '101')),
+((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '102'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "11:00-12:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Science Building' AND room_number = '102')),
+((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '103'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "12:00-13:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Science Building' AND room_number = '103')),
+((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '101'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "10:00-11:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Technology Building' AND room_number = '201')),
+((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '102'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "11:00-12:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Technology Building' AND room_number = '202')),
+((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '103'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "12:00-13:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Technology Building' AND room_number = '203')),
+((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '101'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "10:00-11:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Security Building' AND room_number = '301')),
+((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '102'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "11:00-12:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Security Building' AND room_number = '302')),
+((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '103'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "12:00-13:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Security Building' AND room_number = '303'));
 
 -- COURSE ENROLLMENTS
 INSERT INTO public.course_enrollments (student_id, course_offering_id)
