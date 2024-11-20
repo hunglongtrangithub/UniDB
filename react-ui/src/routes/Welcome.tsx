@@ -27,7 +27,7 @@ const WelcomePage: React.FC = () => {
       >
         <Box sx={{ marginBottom: "16px" }}>
           <Typography variant="h4" component="h1" color="textPrimary">
-            Welcome to the System
+            Welcome to UniDB
           </Typography>
         </Box>
         <Box sx={{ marginBottom: "24px" }}>

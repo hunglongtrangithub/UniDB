@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, CircularProgress, Alert } from '@mui/material';
+import React from 'react';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import Navbar from '../components/Navbar';
-import { getUserDetails } from '../services/user';
+import StudentDashboard from '../components/StudentDashboard';
+import InstructorDashboard from '../components/InstructorDashboard';
+import AdvisorDashboard from '../components/AdvisorDashboard';
+import StaffDashboard from '../components/StaffDashboard';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 const Dashboard: React.FC = () => {
-  const [userName, setUserName] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const { role, firstName } = await getUserDetails();
-        setUserName(firstName);
-        setUserRole(role);
-      } catch (err: any) {
-        setError(err.message || 'Error fetching user details.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserDetails();
-  }, []);
-
-  if (loading) {
+  const { userName, userRole } = useSelector((state: RootState) => state.user);
+  if (!userName || !userRole) {
     return (
       <Box
         sx={{
@@ -40,41 +25,26 @@ const Dashboard: React.FC = () => {
     );
   }
 
-  if (error) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <Alert severity="error">{error}</Alert>
-      </Box>
-    );
-  }
+  const renderDashboard = () => {
+    switch (userRole) {
+      case 'student':
+        return <StudentDashboard />;
+      case 'instructor':
+        return <InstructorDashboard />;
+      case 'advisor':
+        return <AdvisorDashboard />;
+      case 'staff':
+        return <StaffDashboard />;
+      default:
+        return <Typography>Role not recognized.</Typography>;
+    }
+  };
 
   return (
     <Box>
       <Navbar userName={userName} />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: 'calc(100vh - 64px)', // Adjust for Navbar height
-          padding: '16px',
-          backgroundColor: '#f4f4f4',
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-          Welcome, {userName}!
-        </Typography>
-        <Typography variant="h6" color="textSecondary" gutterBottom>
-          Your role: {userRole}
-        </Typography>
+      <Box sx={{ padding: '16px' }}>
+        {renderDashboard()}
       </Box>
     </Box>
   );
