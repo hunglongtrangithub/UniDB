@@ -1,13 +1,5 @@
-import { createClient, AuthResponse } from "@supabase/supabase-js";
-
-const supabaseUrl: string | undefined = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey: string | undefined = import.meta.env.VITE_SUPABASE_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error("Missing Supabase URL or Key in environment variables.");
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { AuthResponse } from "@supabase/supabase-js";
+import { supabase } from "./client";
 
 export const signUp = async (
   email: string,

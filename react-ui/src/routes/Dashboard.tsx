@@ -1,43 +1,78 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, CircularProgress, Alert } from '@mui/material';
+import { getUserDetails } from '../services/user';
 
 const Dashboard: React.FC = () => {
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const { role, firstName } = await getUserDetails();
+        setUserName(firstName);
+        setUserRole(role);
+      } catch (err: any) {
+        setError(err.message || 'Error fetching user details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
   return (
-    <div className="dashboard">
-      <header className="dashboard-header">
-        <h1>Dashboard</h1>
-      </header>
-      <div className="dashboard-body">
-        <aside className="dashboard-sidebar">
-          <nav>
-            <ul>
-              <li>
-                <a href="#overview">Overview</a>
-              </li>
-              <li>
-                <a href="#reports">Reports</a>
-              </li>
-              <li>
-                <a href="#settings">Settings</a>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-        <main className="dashboard-content">
-          <section id="overview">
-            <h2>Overview</h2>
-            <p>Welcome to the dashboard overview.</p>
-          </section>
-          <section id="reports">
-            <h2>Reports</h2>
-            <p>Here you can find various reports.</p>
-          </section>
-          <section id="settings">
-            <h2>Settings</h2>
-            <p>Adjust your preferences here.</p>
-          </section>
-        </main>
-      </div>
-    </div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        padding: '16px',
+        backgroundColor: '#f4f4f4',
+      }}
+    >
+      <Typography variant="h4" gutterBottom>
+        Hello, {userName}!
+      </Typography>
+      <Typography variant="h6" color="textSecondary" gutterBottom>
+        Your role: {userRole}
+      </Typography>
+    </Box>
   );
 };
 
