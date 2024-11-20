@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI13 - MainDashboard</title>
+    <style>
+        /* CSS styling for the Main Dashboard */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+        }
+        .dashboard-container {
+            width: 80%;
+            margin: 50px auto;
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .dashboard-header h1 {
+            font-size: 36px;
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .nav-item {
+            background-color: #ffffff;
+            width: 200px;
+            height: 100px;
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            color: #212529;
+            font-size: 18px;
+        }
+        .nav-item:hover {
+            background-color: #007bff;
+            color: #ffffff;
+            border-color: #007bff;
+        }
+        .logout-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .logout-button:hover {
+            text-decoration: underline;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Main Dashboard</h1>
+        <!-- Annotation for user role display -->
+        <p class="annotation">* The dashboard displays options based on the user's role.</p>
+    </div>
+    <!-- Navigation Menu -->
+    <div class="nav-menu">
+        <!-- Example for Staff User -->
+        <!-- Add Course -->
+        <a href="add_course.html" class="nav-item">Add New Course</a>
+        <!-- Assign Instructor -->
+        <a href="assign_instructor.html" class="nav-item">Assign Instructor</a>
+        <!-- Generate Report -->
+        <a href="generate_report.html" class="nav-item">Generate Report</a>
+        <!-- Modify Student Data -->
+        <a href="modify_student.html" class="nav-item">Modify Student Data</a>
+    </div>
+    <!-- Logout Button -->
+    <a href="login.html" class="logout-button">Logout</a>
+</div>
+
+<!-- Annotations -->
+<div class="annotation">
+    <p>* The dashboard provides navigation links to different system features based on the user's role.</p>
+    <p>* In this example, options are shown for a Staff user.</p>
+    <p>* The "Logout" button allows the user to exit the session.</p>
+</div>
+
+</body>
+</html>

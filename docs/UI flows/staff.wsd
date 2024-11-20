@@ -1,0 +1,40 @@
+@startuml StaffUIFlow
+title Staff UI Flow Diagram
+
+rectangle "UI12 - LoginScreen" as UI12
+rectangle "UI13 - MainDashboard" as UI13
+rectangle "UI01 - AddCourseForm" as UI01
+rectangle "UI02 - AssignInstructorForm" as UI02
+rectangle "UI08 - DepartmentReportGenerator" as UI08
+rectangle "UI09 - StudentDataMaintenanceForm" as UI09
+rectangle "UI14 - ErrorNotification" as UI14
+rectangle "UI15 - SuccessConfirmation" as UI15
+
+UI12 --> UI13 : "Login Successful"
+UI13 --> UI01 : "Add New Course"
+UI13 --> UI02 : "Assign Instructor to Course"
+UI13 --> UI08 : "Generate Department Report"
+UI13 --> UI09 : "Modify Student Data"
+UI13 --> UI12 : "Logout"
+UI13 --> UI14 : "Error Occurs"
+
+UI01 --> UI15 : "Course Added"
+UI01 --> UI14 : "Error Occurs"
+UI01 --> UI13 : "Cancel / Back"
+
+UI02 --> UI15 : "Instructor Assigned"
+UI02 --> UI14 : "Error Occurs"
+UI02 --> UI13 : "Cancel / Back"
+
+UI08 --> UI15 : "Report Generated"
+UI08 --> UI14 : "Error Occurs"
+UI08 --> UI13 : "Cancel / Back"
+
+UI09 --> UI15 : "Student Data Updated"
+UI09 --> UI14 : "Error Occurs"
+UI09 --> UI13 : "Cancel / Back"
+
+UI14 --> UI13 : "Acknowledge Error"
+UI15 --> UI13 : "Acknowledge Success"
+
+@enduml

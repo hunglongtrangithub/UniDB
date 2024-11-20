@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI05 - GPASummaryReport</title>
+    <style>
+        /* CSS styling for the GPA Summary Report */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .report-container {
+            width: 800px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .report-container h2 {
+            text-align: center;
+        }
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        .filter-section label {
+            font-weight: bold;
+        }
+        .filter-section select {
+            width: 200px;
+            padding: 5px;
+            margin-left: 10px;
+            margin-right: 20px;
+        }
+        .filter-section input[type="submit"] {
+            padding: 5px 15px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .report-table th,
+        .report-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .report-table th {
+            background-color: #e9ecef;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <h2>GPA Summary Report</h2>
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <form>
+            <label for="major">Filter by Major:</label>
+            <select id="major" name="major">
+                <!-- Options would be populated dynamically -->
+                <option value="">-- All Majors --</option>
+                <option value="cs">Computer Science</option>
+                <option value="math">Mathematics</option>
+            </select>
+            <label for="semester">Semester:</label>
+            <select id="semester" name="semester">
+                <!-- Options would be populated dynamically -->
+                <option value="">-- All Semesters --</option>
+                <option value="fall2023">Fall 2023</option>
+                <option value="spring2024">Spring 2024</option>
+            </select>
+            <input type="submit" value="Generate Report">
+        </form>
+    </div>
+    <!-- Report Table -->
+    <table class="report-table">
+        <tr>
+            <th>Major</th>
+            <th>Highest GPA</th>
+            <th>Lowest GPA</th>
+            <th>Average GPA</th>
+        </tr>
+        <!-- Example data rows -->
+        <tr>
+            <td>Computer Science</td>
+            <td>4.0</td>
+            <td>2.5</td>
+            <td>3.2</td>
+        </tr>
+        <tr>
+            <td>Mathematics</td>
+            <td>3.9</td>
+            <td>2.8</td>
+            <td>3.4</td>
+        </tr>
+    </table>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Back to Dashboard Button -->
+        <input type="button" value="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface allows advisors to view GPA summaries.</p>
+        <p>* Filters are available to select major and semester.</p>
+        <p>* The "Generate Report" button refreshes the report based on selected filters.</p>
+        <p>* The report table displays the highest, lowest, and average GPAs.</p>
+        <p>* The "Back to Dashboard" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

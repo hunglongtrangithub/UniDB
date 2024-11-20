@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI10 - CourseEnrollmentList</title>
+    <style>
+        /* CSS styling for the Course Enrollment List */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e2e6ea;
+        }
+        .enrollment-container {
+            width: 800px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .enrollment-container h2 {
+            text-align: center;
+        }
+        .course-selection {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .course-selection label {
+            font-weight: bold;
+        }
+        .course-selection select {
+            width: 300px;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .enrollment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .enrollment-table th,
+        .enrollment-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .enrollment-table th {
+            background-color: #e9ecef;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="enrollment-container">
+    <h2>Course Enrollment List</h2>
+    <!-- Course Selection -->
+    <div class="course-selection">
+        <form>
+            <label for="course">Select Course Offering:</label>
+            <select id="course" name="course">
+                <!-- Options would be populated dynamically -->
+                <option value="cs101_fall2023">CS101 - Fall 2023</option>
+                <option value="cs202_spring2024">CS202 - Spring 2024</option>
+            </select>
+            <input type="submit" value="View Enrollments">
+        </form>
+    </div>
+    <!-- Enrollment Table -->
+    <table class="enrollment-table">
+        <tr>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Enrollment Status</th>
+        </tr>
+        <!-- Example data rows -->
+        <tr>
+            <td>12345678</td>
+            <td>John Doe</td>
+            <td>Enrolled</td>
+        </tr>
+        <tr>
+            <td>87654321</td>
+            <td>Jane Smith</td>
+            <td>Enrolled</td>
+        </tr>
+    </table>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Back to Dashboard Button -->
+        <input type="button" value="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface allows instructors to view the list of students enrolled in their courses.</p>
+        <p>* The course offering is selected from a dropdown list.</p>
+        <p>* The "View Enrollments" button refreshes the list based on the selected course.</p>
+        <p>* The enrollment table displays student IDs, names, and enrollment status.</p>
+        <p>* The "Back to Dashboard" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

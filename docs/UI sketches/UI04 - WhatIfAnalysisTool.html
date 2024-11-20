@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI04 - WhatIfAnalysisTool</title>
+    <style>
+        /* CSS styling for the What-If Analysis Tool */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+        }
+        .analysis-container {
+            width: 700px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .analysis-container h2 {
+            text-align: center;
+        }
+        .analysis-container label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+        }
+        .analysis-container select,
+        .analysis-container input[type="text"],
+        .analysis-container input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .courses-list {
+            margin-top: 20px;
+        }
+        .courses-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .courses-list th,
+        .courses-list td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .courses-list th {
+            background-color: #f8f9fa;
+        }
+        .button-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .button-group input[type="submit"],
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button-group input[type="submit"] {
+            background-color: #17a2b8;
+            color: #ffffff;
+        }
+        .button-group input[type="button"] {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="analysis-container">
+    <h2>What-If GPA Analysis</h2>
+    <!-- Instructions -->
+    <p>Select hypothetical courses and expected grades to see the potential impact on your GPA.</p>
+    <!-- Course Selection -->
+    <div class="courses-list">
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Credits</th>
+                <th>Expected Grade</th>
+            </tr>
+            <!-- Example rows; in practice, rows would be dynamically added -->
+            <tr>
+                <td>
+                    <select name="course1">
+                        <option value="">-- Select Course --</option>
+                        <option value="course1">Course 1</option>
+                        <option value="course2">Course 2</option>
+                    </select>
+                </td>
+                <td>3</td>
+                <td>
+                    <select name="grade1">
+                        <option value="">-- Select Grade --</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>
+                </td>
+            </tr>
+            <!-- Additional rows can be added -->
+        </table>
+    </div>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Analyze Button -->
+        <input type="submit" value="Perform Analysis">
+        <!-- Cancel Button -->
+        <input type="button" value="Cancel" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This tool allows students or advisors to simulate GPA outcomes.</p>
+        <p>* Users select courses and expected grades.</p>
+        <p>* The "Perform Analysis" button calculates the potential GPA.</p>
+        <p>* The "Cancel" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

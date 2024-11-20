@@ -1,0 +1,28 @@
+@startuml StudentUIFlow
+title Student UI Flow Diagram
+
+' Define UI elements with identifiers and names
+rectangle "UI12 - LoginScreen" as UI12
+rectangle "UI13 - MainDashboard" as UI13
+rectangle "UI04 - WhatIfAnalysisTool" as UI04
+rectangle "UI07 - TranscriptView" as UI07
+rectangle "UI14 - ErrorNotification" as UI14
+rectangle "UI15 - SuccessConfirmation" as UI15
+
+' Define the flow between UIs
+UI12 --> UI13 : "Login Successful"
+UI13 --> UI04 : "Select What-If Analysis"
+UI13 --> UI07 : "View Transcript"
+UI13 --> UI12 : "Logout"
+UI13 --> UI14 : "Error Occurs"
+
+UI04 --> UI15 : "Analysis Completed"
+UI04 --> UI14 : "Error Occurs"
+UI04 --> UI13 : "Cancel / Back"
+
+UI07 --> UI13 : "Back to Dashboard"
+
+UI14 --> UI13 : "Acknowledge Error"
+UI15 --> UI13 : "Acknowledge Success"
+
+@enduml

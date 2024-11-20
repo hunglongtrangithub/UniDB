@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI08 - DepartmentReportGenerator</title>
+    <style>
+        /* CSS styling for the Department Report Generator */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e2e6ea;
+        }
+        .report-container {
+            width: 800px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .report-container h2 {
+            text-align: center;
+        }
+        .criteria-section {
+            margin-bottom: 20px;
+        }
+        .criteria-section label {
+            font-weight: bold;
+        }
+        .criteria-section select,
+        .criteria-section input[type="date"] {
+            width: 200px;
+            padding: 5px;
+            margin-left: 10px;
+            margin-right: 20px;
+        }
+        .criteria-section input[type="submit"] {
+            padding: 5px 15px;
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .report-output {
+            margin-top: 20px;
+        }
+        .report-output p {
+            font-weight: bold;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <h2>Department Report Generator</h2>
+    <!-- Criteria Selection -->
+    <div class="criteria-section">
+        <form>
+            <label for="reportType">Report Type:</label>
+            <select id="reportType" name="reportType">
+                <!-- Options for different report types -->
+                <option value="enrollment">Enrollment Statistics</option>
+                <option value="gpaDistribution">GPA Distribution</option>
+                <option value="coursePerformance">Course Performance</option>
+            </select>
+            <label for="dateRange">Date Range:</label>
+            <input type="date" id="startDate" name="startDate">
+            to
+            <input type="date" id="endDate" name="endDate">
+            <input type="submit" value="Generate Report">
+        </form>
+    </div>
+    <!-- Report Output -->
+    <div class="report-output">
+        <p>Report Results Will Be Displayed Here</p>
+        <!-- This section would display the generated report -->
+    </div>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Back to Dashboard Button -->
+        <input type="button" value="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface allows staff to generate department reports.</p>
+        <p>* Users select the report type and date range.</p>
+        <p>* The "Generate Report" button produces the report based on selected criteria.</p>
+        <p>* The report output is displayed below the criteria selection.</p>
+        <p>* The "Back to Dashboard" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

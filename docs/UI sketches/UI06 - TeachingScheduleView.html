@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI06 - TeachingScheduleView</title>
+    <style>
+        /* CSS styling for the Teaching Schedule View */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+        }
+        .schedule-container {
+            width: 800px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .schedule-container h2 {
+            text-align: center;
+        }
+        .semester-selection {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .semester-selection label {
+            font-weight: bold;
+        }
+        .semester-selection select {
+            width: 200px;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .schedule-table th,
+        .schedule-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .schedule-table th {
+            background-color: #e9ecef;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="schedule-container">
+    <h2>Teaching Schedule</h2>
+    <!-- Semester Selection -->
+    <div class="semester-selection">
+        <form>
+            <label for="semester">Select Semester:</label>
+            <select id="semester" name="semester">
+                <!-- Options would be populated dynamically -->
+                <option value="fall2023">Fall 2023</option>
+                <option value="spring2024">Spring 2024</option>
+            </select>
+            <input type="submit" value="View Schedule">
+        </form>
+    </div>
+    <!-- Schedule Table -->
+    <table class="schedule-table">
+        <tr>
+            <th>Course</th>
+            <th>Course Name</th>
+            <th>Days</th>
+            <th>Time</th>
+            <th>Room</th>
+            <th>Enrollment</th>
+        </tr>
+        <!-- Example data rows -->
+        <tr>
+            <td>CS101</td>
+            <td>Introduction to Computer Science</td>
+            <td>Mon, Wed, Fri</td>
+            <td>9:00 AM - 10:15 AM</td>
+            <td>Room 101</td>
+            <td>30/40</td>
+        </tr>
+        <tr>
+            <td>CS202</td>
+            <td>Data Structures</td>
+            <td>Tue, Thu</td>
+            <td>11:00 AM - 12:15 PM</td>
+            <td>Room 202</td>
+            <td>25/35</td>
+        </tr>
+    </table>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Back to Dashboard Button -->
+        <input type="button" value="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface displays the instructor's teaching schedule for a selected semester.</p>
+        <p>* The schedule includes course details, days, time, room, and enrollment numbers.</p>
+        <p>* The "View Schedule" button refreshes the schedule based on the selected semester.</p>
+        <p>* The "Back to Dashboard" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

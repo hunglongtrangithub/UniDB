@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI03 - StudentEnrollmentForm</title>
+    <style>
+        /* CSS styling for the Student Enrollment Form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f3f5;
+        }
+        .form-container {
+            width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-container label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container .button-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .form-container .button-group input[type="submit"],
+        .form-container .button-group input[type="button"] {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container .button-group input[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .form-container .button-group input[type="button"] {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Enroll Student in Course</h2>
+    <!-- Student Search -->
+    <label for="studentSearch">Search Student:</label>
+    <input type="text" id="studentSearch" name="studentSearch" placeholder="Enter student ID or name">
+    <!-- Course Selection -->
+    <label for="course">Select Course Offering:</label>
+    <select id="course" name="course">
+        <!-- Options would be populated dynamically -->
+        <option value="">-- Select Course Offering --</option>
+        <option value="offering1">Course 1 - Fall 2023</option>
+        <option value="offering2">Course 2 - Spring 2024</option>
+    </select>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Enroll Button -->
+        <input type="submit" value="Enroll Student">
+        <!-- Cancel Button -->
+        <input type="button" value="Cancel" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This form allows advisors to enroll a student in a course offering.</p>
+        <p>* Advisors can search for a student by ID or name.</p>
+        <p>* Course offerings are selected from a dropdown list.</p>
+        <p>* The "Enroll Student" button submits the enrollment request.</p>
+        <p>* The "Cancel" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

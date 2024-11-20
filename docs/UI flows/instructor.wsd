@@ -1,0 +1,21 @@
+@startuml InstructorUIFlow
+title Instructor UI Flow Diagram
+
+rectangle "UI12 - LoginScreen" as UI12
+rectangle "UI13 - MainDashboard" as UI13
+rectangle "UI06 - TeachingScheduleView" as UI06
+rectangle "UI10 - CourseEnrollmentList" as UI10
+rectangle "UI14 - ErrorNotification" as UI14
+
+UI12 --> UI13 : "Login Successful"
+UI13 --> UI06 : "View Teaching Schedule"
+UI13 --> UI10 : "View Course Enrollments"
+UI13 --> UI12 : "Logout"
+UI13 --> UI14 : "Error Occurs"
+
+UI06 --> UI13 : "Back to Dashboard"
+UI10 --> UI13 : "Back to Dashboard"
+
+UI14 --> UI13 : "Acknowledge Error"
+
+@enduml

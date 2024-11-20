@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI09 - StudentDataMaintenanceForm</title>
+    <style>
+        /* CSS styling for the Student Data Maintenance Form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f3f5;
+        }
+        .form-container {
+            width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-container label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .button-group input[type="submit"],
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button-group input[type="submit"] {
+            background-color: #ffc107;
+            color: #ffffff;
+        }
+        .button-group input[type="button"] {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Modify Student Data</h2>
+    <!-- Student Search -->
+    <label for="studentSearch">Search Student:</label>
+    <input type="text" id="studentSearch" name="studentSearch" placeholder="Enter student ID or name">
+    <!-- Student Details -->
+    <label for="studentName">Student Name:</label>
+    <input type="text" id="studentName" name="studentName" value="John Doe">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value="johndoe@example.com">
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" value="555-1234">
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" value="123 Main St">
+    <!-- Enrollment Status -->
+    <label for="status">Enrollment Status:</label>
+    <select id="status" name="status">
+        <option value="active" selected>Active</option>
+        <option value="inactive">Inactive</option>
+    </select>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Save Changes Button -->
+        <input type="submit" value="Save Changes">
+        <!-- Cancel Button -->
+        <input type="button" value="Cancel" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This form allows staff to modify student data.</p>
+        <p>* Staff can update contact information and enrollment status.</p>
+        <p>* The "Save Changes" button submits the updates.</p>
+        <p>* The "Cancel" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI11 - ManageStudentMajorForm</title>
+    <style>
+        /* CSS styling for the Manage Student Major Form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f3f5;
+        }
+        .form-container {
+            width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-container label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .button-group input[type="submit"],
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button-group input[type="submit"] {
+            background-color: #17a2b8;
+            color: #ffffff;
+        }
+        .button-group input[type="button"] {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Manage Student Major</h2>
+    <!-- Student Search -->
+    <label for="studentSearch">Search Student:</label>
+    <input type="text" id="studentSearch" name="studentSearch" placeholder="Enter student ID or name">
+    <!-- Current Major -->
+    <label for="currentMajor">Current Major:</label>
+    <input type="text" id="currentMajor" name="currentMajor" value="Computer Science" readonly>
+    <!-- New Major Selection -->
+    <label for="newMajor">Select New Major:</label>
+    <select id="newMajor" name="newMajor">
+        <!-- Options would be populated dynamically -->
+        <option value="">-- Select New Major --</option>
+        <option value="cs">Computer Science</option>
+        <option value="math">Mathematics</option>
+        <option value="eng">English</option>
+    </select>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Update Major Button -->
+        <input type="submit" value="Update Major">
+        <!-- Cancel Button -->
+        <input type="button" value="Cancel" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This form allows advisors to manage and update a student's major.</p>
+        <p>* Advisors search for the student and view the current major.</p>
+        <p>* A new major is selected from the dropdown list.</p>
+        <p>* The "Update Major" button submits the change request.</p>
+        <p>* The "Cancel" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

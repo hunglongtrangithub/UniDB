@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI15 - SuccessConfirmation</title>
+    <style>
+        /* CSS styling for Success Confirmation */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d4edda;
+        }
+        .success-container {
+            width: 400px;
+            margin: 100px auto;
+            padding: 25px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .success-container h2 {
+            color: #155724;
+        }
+        .success-container p {
+            color: #155724;
+        }
+        .success-container input[type="button"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #155724;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="success-container">
+    <h2>Success</h2>
+    <!-- Success Message Display -->
+    <p>The instructor has been successfully assigned to the course.</p>
+    <!-- Acknowledge Button -->
+    <input type="button" value="Return to Dashboard" onclick="window.location.href='dashboard.html'">
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface confirms successful completion of an operation.</p>
+        <p>* The message provides details about the successful action.</p>
+        <p>* The "Return to Dashboard" button takes the user back to the main dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

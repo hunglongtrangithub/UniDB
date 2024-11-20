@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI14 - ErrorNotification</title>
+    <style>
+        /* CSS styling for Error Notification */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8d7da;
+        }
+        .error-container {
+            width: 400px;
+            margin: 100px auto;
+            padding: 25px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .error-container h2 {
+            color: #721c24;
+        }
+        .error-container p {
+            color: #721c24;
+        }
+        .error-container input[type="button"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #721c24;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="error-container">
+    <h2>Error Occurred</h2>
+    <!-- Error Message Display -->
+    <p>An error has occurred while processing your request.</p>
+    <!-- Specific Error Details -->
+    <p><em>Example: Teaching load exceeded. Cannot assign instructor to course.</em></p>
+    <!-- Acknowledge Button -->
+    <input type="button" value="Return to Dashboard" onclick="window.location.href='dashboard.html'">
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface displays error messages to the user.</p>
+        <p>* The error message provides details about what went wrong.</p>
+        <p>* The "Return to Dashboard" button takes the user back to the main dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

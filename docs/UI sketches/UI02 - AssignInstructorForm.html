@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI02 - AssignInstructorForm</title>
+    <style>
+        /* CSS styling for the Assign Instructor Form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            width: 500px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-container label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+        }
+        .form-container select,
+        .form-container input[type="text"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container .button-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .form-container .button-group input[type="submit"],
+        .form-container .button-group input[type="button"] {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container .button-group input[type="submit"] {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+        .form-container .button-group input[type="button"] {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Assign Instructor to Course</h2>
+    <!-- Instructor Selection -->
+    <label for="instructor">Select Instructor:</label>
+    <select id="instructor" name="instructor">
+        <!-- Options would be populated dynamically -->
+        <option value="">-- Select Instructor --</option>
+        <option value="instructor1">Instructor 1</option>
+        <option value="instructor2">Instructor 2</option>
+    </select>
+    <!-- Semester Selection -->
+    <label for="semester">Select Semester:</label>
+    <select id="semester" name="semester">
+        <!-- Options would be populated dynamically -->
+        <option value="">-- Select Semester --</option>
+        <option value="fall2023">Fall 2023</option>
+        <option value="spring2024">Spring 2024</option>
+    </select>
+    <!-- Course Selection -->
+    <label for="course">Select Course:</label>
+    <select id="course" name="course">
+        <!-- Options would be populated dynamically -->
+        <option value="">-- Select Course --</option>
+        <option value="course1">Course 1</option>
+        <option value="course2">Course 2</option>
+    </select>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Assign Button -->
+        <input type="submit" value="Assign">
+        <!-- Cancel Button -->
+        <input type="button" value="Cancel" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* The form allows staff to assign an instructor to a course offering.</p>
+        <p>* It includes dropdowns for selecting the instructor, semester, and course.</p>
+        <p>* The "Assign" button submits the assignment request.</p>
+        <p>* The "Cancel" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

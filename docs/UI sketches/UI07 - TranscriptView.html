@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI07 - TranscriptView</title>
+    <style>
+        /* CSS styling for the Transcript View */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .transcript-container {
+            width: 800px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .transcript-container h2 {
+            text-align: center;
+        }
+        .student-info {
+            margin-bottom: 20px;
+        }
+        .student-info p {
+            font-weight: bold;
+        }
+        .transcript-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transcript-table th,
+        .transcript-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .transcript-table th {
+            background-color: #e9ecef;
+        }
+        .gpa-info {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        /* Annotations */
+        .annotation {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 15px;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group input[type="button"] {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="transcript-container">
+    <h2>Academic Transcript</h2>
+    <!-- Student Information -->
+    <div class="student-info">
+        <p>Student Name: John Doe</p>
+        <p>Student ID: 12345678</p>
+        <p>Major: Computer Science</p>
+    </div>
+    <!-- Transcript Table -->
+    <table class="transcript-table">
+        <tr>
+            <th>Semester</th>
+            <th>Course</th>
+            <th>Course Name</th>
+            <th>Credits</th>
+            <th>Grade</th>
+        </tr>
+        <!-- Example data rows -->
+        <tr>
+            <td>Fall 2022</td>
+            <td>CS101</td>
+            <td>Introduction to Computer Science</td>
+            <td>3</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td>Fall 2022</td>
+            <td>MATH201</td>
+            <td>Calculus I</td>
+            <td>4</td>
+            <td>B+</td>
+        </tr>
+        <!-- Additional rows -->
+    </table>
+    <!-- GPA Information -->
+    <div class="gpa-info">
+        <p>Cumulative GPA: 3.75</p>
+        <p>Total Credits Earned: 30</p>
+    </div>
+    <!-- Button Group -->
+    <div class="button-group">
+        <!-- Back to Dashboard Button -->
+        <input type="button" value="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+    </div>
+    <!-- Annotations -->
+    <div class="annotation">
+        <p>* This interface displays the student's academic transcript.</p>
+        <p>* It includes course details, grades, and credits for each semester.</p>
+        <p>* Cumulative GPA and total credits earned are displayed.</p>
+        <p>* The "Back to Dashboard" button returns to the Main Dashboard.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+@startuml AdvisorUIFlow
+title Advisor UI Flow Diagram
+
+rectangle "UI12 - LoginScreen" as UI12
+rectangle "UI13 - MainDashboard" as UI13
+rectangle "UI03 - StudentEnrollmentForm" as UI03
+rectangle "UI04 - WhatIfAnalysisTool" as UI04
+rectangle "UI05 - GPASummaryReport" as UI05
+rectangle "UI11 - ManageStudentMajorForm" as UI11
+rectangle "UI14 - ErrorNotification" as UI14
+rectangle "UI15 - SuccessConfirmation" as UI15
+
+UI12 --> UI13 : "Login Successful"
+UI13 --> UI03 : "Enroll Student in Course"
+UI13 --> UI04 : "Perform What-If Analysis"
+UI13 --> UI05 : "View GPA Summary"
+UI13 --> UI11 : "Manage Student Major"
+UI13 --> UI12 : "Logout"
+UI13 --> UI14 : "Error Occurs"
+
+UI03 --> UI15 : "Enrollment Successful"
+UI03 --> UI14 : "Error Occurs"
+UI03 --> UI13 : "Cancel / Back"
+
+UI04 --> UI15 : "Analysis Completed"
+UI04 --> UI14 : "Error Occurs"
+UI04 --> UI13 : "Cancel / Back"
+
+UI05 --> UI13 : "Back to Dashboard"
+
+UI11 --> UI15 : "Major Updated"
+UI11 --> UI14 : "Error Occurs"
+UI11 --> UI13 : "Cancel / Back"
+
+UI14 --> UI13 : "Acknowledge Error"
+UI15 --> UI13 : "Acknowledge Success"
+
+@enduml
