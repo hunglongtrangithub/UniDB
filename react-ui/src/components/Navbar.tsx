@@ -1,7 +1,7 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { logOut } from '../services/auth';
+import React from "react";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { logOut } from "../services/auth";
 
 interface NavbarProps {
   userName: string | null;
@@ -13,14 +13,14 @@ const Navbar: React.FC<NavbarProps> = ({ userName }) => {
   const handleLogout = async () => {
     try {
       await logOut();
-      navigate('/login');
+      navigate("/login");
     } catch (err: any) {
-      console.error(err.message || 'Error logging out.');
+      console.error(err.message || "Error logging out.");
     }
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
+    <AppBar position="static" sx={{ backgroundColor: "#1976d2" }}>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           UniDB
@@ -39,4 +39,3 @@ const Navbar: React.FC<NavbarProps> = ({ userName }) => {
 };
 
 export default Navbar;
-

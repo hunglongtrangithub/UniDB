@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, Typography, CircularProgress } from '@mui/material';
-import Navbar from '../components/Navbar';
-import StudentDashboard from '../components/StudentDashboard';
-import InstructorDashboard from '../components/InstructorDashboard';
-import AdvisorDashboard from '../components/AdvisorDashboard';
-import StaffDashboard from '../components/StaffDashboard';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import React from "react";
+import { Box, Typography, CircularProgress } from "@mui/material";
+import Navbar from "../components/Navbar";
+import StudentDashboard from "../components/StudentDashboard";
+import InstructorDashboard from "../components/InstructorDashboard";
+import AdvisorDashboard from "../components/AdvisorDashboard";
+import StaffDashboard from "../components/StaffDashboard";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const Dashboard: React.FC = () => {
   const { userName, userRole } = useSelector((state: RootState) => state.user);
@@ -14,10 +14,10 @@ const Dashboard: React.FC = () => {
     return (
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
         <CircularProgress />
@@ -27,13 +27,13 @@ const Dashboard: React.FC = () => {
 
   const renderDashboard = () => {
     switch (userRole) {
-      case 'student':
+      case "student":
         return <StudentDashboard />;
-      case 'instructor':
+      case "instructor":
         return <InstructorDashboard />;
-      case 'advisor':
+      case "advisor":
         return <AdvisorDashboard />;
-      case 'staff':
+      case "staff":
         return <StaffDashboard />;
       default:
         return <Typography>Role not recognized.</Typography>;
@@ -43,9 +43,7 @@ const Dashboard: React.FC = () => {
   return (
     <Box>
       <Navbar userName={userName} />
-      <Box sx={{ padding: '16px' }}>
-        {renderDashboard()}
-      </Box>
+      <Box sx={{ padding: "16px" }}>{renderDashboard()}</Box>
     </Box>
   );
 };
