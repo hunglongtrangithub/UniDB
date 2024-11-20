@@ -32,7 +32,7 @@ const WelcomePage: React.FC = () => {
         </Box>
         <Box sx={{ marginBottom: "24px" }}>
           <Typography variant="body1" color="textSecondary">
-            Welcome to our system! Please use the navigation links below to
+            Welcome to UniDB! Please use the navigation links below to
             access different features.
           </Typography>
         </Box>
