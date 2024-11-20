@@ -56,56 +56,6 @@ VALUES
 ('Information Technology', 2, TRUE),
 ('Cybersecurity', 3, TRUE);
 
--- USERS
-INSERT INTO auth.users (id, role, raw_user_meta_data)
-VALUES 
-('00000000-0000-0000-0000-000000000001', 'authenticated', '{"role": "student", "first_name": "Alice", "last_name": "Smith"}'),
-('00000000-0000-0000-0000-000000000002', 'authenticated', '{"role": "student", "first_name": "Bob", "last_name": "Johnson"}'),
-('00000000-0000-0000-0000-000000000003', 'authenticated', '{"role": "student", "first_name": "Charlie", "last_name": "Brown"}'),
-('00000000-0000-0000-0000-000000000004', 'authenticated', '{"role": "instructor", "first_name": "David", "last_name": "Williams"}'),
-('00000000-0000-0000-0000-000000000005', 'authenticated', '{"role": "instructor", "first_name": "Eve", "last_name": "Davis"}'),
-('00000000-0000-0000-0000-000000000006', 'authenticated', '{"role": "instructor", "first_name": "Frank", "last_name": "Miller"}'),
-('00000000-0000-0000-0000-000000000007', 'authenticated', '{"role": "advisor", "first_name": "Grace", "last_name": "Wilson"}'),
-('00000000-0000-0000-0000-000000000008', 'authenticated', '{"role": "advisor", "first_name": "Hank", "last_name": "Moore"}'),
-('00000000-0000-0000-0000-000000000009', 'authenticated', '{"role": "advisor", "first_name": "Ivy", "last_name": "Taylor"}'),
-('00000000-0000-0000-0000-000000000010', 'authenticated', '{"role": "staff", "first_name": "Jack", "last_name": "Anderson"}'),
-('00000000-0000-0000-0000-000000000011', 'authenticated', '{"role": "staff", "first_name": "Karen", "last_name": "Thomas"}'),
-('00000000-0000-0000-0000-000000000012', 'authenticated', '{"role": "staff", "first_name": "Leo", "last_name": "Jackson"}');
-
--- STUDENTS
-INSERT INTO public.students (id, university_number, major_id)
-VALUES 
-('00000000-0000-0000-0000-000000000001', 'U12345678', 1),
-('00000000-0000-0000-0000-000000000002', 'U23456789', 2),
-('00000000-0000-0000-0000-000000000003', 'U34567890', 3);
-
--- INSTRUCTORS
-INSERT INTO public.instructors (id, department_id)
-VALUES 
-('00000000-0000-0000-0000-000000000004', 1),
-('00000000-0000-0000-0000-000000000005', 2),
-('00000000-0000-0000-0000-000000000006', 3);
-
--- ADVISORS
-INSERT INTO public.advisors (id)
-VALUES 
-('00000000-0000-0000-0000-000000000007'),
-('00000000-0000-0000-0000-000000000008'),
-('00000000-0000-0000-0000-000000000009');
-
-INSERT INTO public.advisor_department (advisor_id, department_id)
-VALUES 
-('00000000-0000-0000-0000-000000000007', 1),
-('00000000-0000-0000-0000-000000000008', 2),
-('00000000-0000-0000-0000-000000000009', 3);
-
--- STAFF
-INSERT INTO public.staff (id, department_id)
-VALUES 
-('00000000-0000-0000-0000-000000000010', 1),
-('00000000-0000-0000-0000-000000000011', 2),
-('00000000-0000-0000-0000-000000000012', 3);
-
 -- COURSES
 INSERT INTO public.courses (prefix, number, name, credits, department_id)
 VALUES 
@@ -136,28 +86,3 @@ VALUES
 ('Security Building', '302', 25),
 ('Security Building', '303', 20);
 
--- COURSE OFFERINGS
-INSERT INTO public.course_offerings (course_id, semester_id, instructor_id, schedule, room_id)
-VALUES 
-((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '101'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "10:00-11:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Science Building' AND room_number = '101')),
-((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '102'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "11:00-12:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Science Building' AND room_number = '102')),
-((SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '103'), 1, '00000000-0000-0000-0000-000000000004', '{"days": "MW", "time": "12:00-13:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Science Building' AND room_number = '103')),
-((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '101'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "10:00-11:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Technology Building' AND room_number = '201')),
-((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '102'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "11:00-12:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Technology Building' AND room_number = '202')),
-((SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '103'), 1, '00000000-0000-0000-0000-000000000005', '{"days": "TR", "time": "12:00-13:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Technology Building' AND room_number = '203')),
-((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '101'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "10:00-11:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Security Building' AND room_number = '301')),
-((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '102'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "11:00-12:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Security Building' AND room_number = '302')),
-((SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '103'), 1, '00000000-0000-0000-0000-000000000006', '{"days": "WF", "time": "12:00-13:00"}'::jsonb, (SELECT id FROM public.rooms WHERE building = 'Security Building' AND room_number = '303'));
-
--- COURSE ENROLLMENTS
-INSERT INTO public.course_enrollments (student_id, course_offering_id)
-VALUES 
-('00000000-0000-0000-0000-000000000001', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '101'))),
-('00000000-0000-0000-0000-000000000001', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '102'))),
-('00000000-0000-0000-0000-000000000001', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CS' AND number = '103'))),
-('00000000-0000-0000-0000-000000000002', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '101'))),
-('00000000-0000-0000-0000-000000000002', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '102'))),
-('00000000-0000-0000-0000-000000000002', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'IT' AND number = '103'))),
-('00000000-0000-0000-0000-000000000003', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '101'))),
-('00000000-0000-0000-0000-000000000003', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '102'))),
-('00000000-0000-0000-0000-000000000003', (SELECT id FROM public.course_offerings WHERE course_id = (SELECT id FROM public.courses WHERE prefix = 'CY' AND number = '103')));

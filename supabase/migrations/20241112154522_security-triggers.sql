@@ -10,16 +10,16 @@ BEGIN
   -- NOTE: during registration, the role-specific columns will be added later and will reference this
   INSERT INTO public.users (id, first_name, last_name)
   VALUES (
-      NEW.id,
-      NEW.raw_user_meta_data ->> 'first_name',
-      NEW.raw_user_meta_data ->> 'last_name'
+    NEW.id,
+    NEW.raw_user_meta_data ->> 'first_name',
+    NEW.raw_user_meta_data ->> 'last_name'
   );
 
   -- Insert the new user's role into the user_roles table
   INSERT INTO public.user_roles (user_id, role)
   VALUES (
-      NEW.id,
-      (NEW.raw_user_meta_data ->> 'role')::public.app_role
+    NEW.id,
+    (NEW.raw_user_meta_data ->> 'role')::public.app_role
   );
 
   RETURN NEW;

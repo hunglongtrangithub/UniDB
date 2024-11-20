@@ -23,10 +23,7 @@ CREATE TABLE public.majors (
 CREATE TABLE public.users (
   id UUID PRIMARY KEY REFERENCES auth.users (id) ON DELETE CASCADE,
   first_name VARCHAR(255),
-  last_name VARCHAR(255),
-  email VARCHAR(255),
-  phone VARCHAR(20),
-  address VARCHAR(255)
+  last_name VARCHAR(255)
 );
 
 CREATE TABLE public.students (
