@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     fs: {
-      deny: ["seedUsers.js"]
-    }
-  }
+      deny: ["seedUsers.js"],
+    },
+  },
 });

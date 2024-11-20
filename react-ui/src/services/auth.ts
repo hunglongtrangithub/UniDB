@@ -9,19 +9,15 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-/**
- * Sign up a new user with email and password.
- * @param email - User email
- * @param password - User password
- * @returns AuthResponse - The session data if sign-up is successful, or an error if failed.
- */
 export const signUp = async (
   email: string,
   password: string,
+  options?: { data: Record<string, any> },
 ): Promise<AuthResponse> => {
   const { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
+    options: options,
   });
 
   if (error) {
@@ -33,12 +29,6 @@ export const signUp = async (
   return { data, error: null };
 };
 
-/**
- * Log in an existing user with email and password.
- * @param email - User email
- * @param password - User password
- * @returns AuthResponse - The session data if log-in is successful, or an error if failed.
- */
 export const logIn = async (
   email: string,
   password: string,
@@ -57,9 +47,6 @@ export const logIn = async (
   return { data, error: null };
 };
 
-/**
- * Log out the current user.
- */
 export const logOut = async (): Promise<void> => {
   const { error } = await supabase.auth.signOut();
 

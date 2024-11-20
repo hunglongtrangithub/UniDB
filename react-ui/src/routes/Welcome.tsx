@@ -1,44 +1,75 @@
 import React from "react";
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Box, Typography, Button, Stack, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const Welcome: React.FC = () => {
+const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleLogin = (): void => {
-    navigate("/login");
-  };
-
-  const handleSignup = (): void => {
-    navigate("/signup");
-  };
-
   return (
-    <Container maxWidth="sm" sx={{ textAlign: "center", mt: 5 }}>
-      <Typography variant="h4" gutterBottom>
-        Welcome to the School Management System
-      </Typography>
-      <Typography variant="body1">
-        Please log in or sign up to access your dashboard.
-      </Typography>
-      <Box mt={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleLogin}
-          sx={{ mr: 2 }}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f4f4f4",
+        padding: "16px",
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          maxWidth: "800px",
+          width: "100%",
+          padding: "32px",
+          textAlign: "center",
+        }}
+      >
+        <Box sx={{ marginBottom: "16px" }}>
+          <Typography variant="h4" component="h1" color="textPrimary">
+            Welcome to the System
+          </Typography>
+        </Box>
+        <Box sx={{ marginBottom: "24px" }}>
+          <Typography variant="body1" color="textSecondary">
+            Welcome to our system! Please use the navigation links below to
+            access different features.
+          </Typography>
+        </Box>
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          sx={{ marginBottom: "24px" }}
         >
-          Log in
-        </Button>
-        <Typography variant="body2" display="block" gutterBottom>
-          New user? Sign up here.
-        </Typography>
-        <Button variant="contained" color="secondary" onClick={handleSignup}>
-          Sign up
-        </Button>
-      </Box>
-    </Container>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/signup")}
+          >
+            Signup
+          </Button>
+        </Stack>
+        <Box
+          sx={{ marginTop: "24px", fontSize: "14px", color: "textSecondary" }}
+        >
+          <Typography variant="body2">
+            * Use the "Login" link to access your account.
+          </Typography>
+          <Typography variant="body2">
+            * Use the "Signup" link to create a new account.
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
-export default Welcome;
+export default WelcomePage;
