@@ -53,7 +53,7 @@ const roleUseCases: Record<string, { id: string; title: string; description: str
       id: "UC05",
       title: "View GPA Summary",
       description: "View GPA summaries for students in your department.",
-      route: "/gpa-summary-report",
+      route: "/gpa-summary-view",
     },
     {
       id: "UC12",

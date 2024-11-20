@@ -14,7 +14,7 @@ const ManageStudentMajor: React.FC = () => {
 
   // States for form fields
   const [studentSearch, setStudentSearch] = useState<string>("");
-  const [currentMajor, setCurrentMajor] = useState<string>("Computer Science"); // Example current major
+  const [currentMajor, setCurrentMajor] = useState<string>(""); // Example current major
   const [newMajor, setNewMajor] = useState<string>("");
 
   // Sample new major options

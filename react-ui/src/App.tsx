@@ -10,7 +10,7 @@ import TeachingScheduleView from "./routes/TeachingScheduleView";
 import CourseEnrollmentView from "./routes/CourseEnrollmentView";
 import TranscriptView from "./routes/TranscriptView";
 import StudentEnrollmentForm from "./routes/StudentEnrollmentForm";
-import GPASummaryReport from "./routes/GPASummaryReport";
+import GPASummaryView from "./routes/GPASummaryView";
 import ManageStudentMajorForm from "./routes/ManageStudentMajorForm";
 import { supabase } from "./services/client";
 import { setUser, clearUser } from "./reducers/userReducer";
@@ -55,7 +55,7 @@ const App: React.FC = () => {
         <Route path="/course-enrollments-view" element={<CourseEnrollmentView />} />
         /* advisor pages */
         <Route path="/enroll-student" element={<StudentEnrollmentForm />} />
-        <Route path="/gpa-summary-report" element={<GPASummaryReport />} />
+        <Route path="/gpa-summary-view" element={<GPASummaryView />} />
         <Route path="/manage-student-major" element={<ManageStudentMajorForm />} />
         /* staff pages */
         {/* <Route path="/add-course" element={<AddCourse />} /> */}
