@@ -52,7 +52,9 @@ const GPASummaryReport: React.FC = () => {
   const handleGenerateReport = () => {
     // Simulate report generation logic
     // You can replace this with an API call or dynamic logic
-    alert(`Generating report for Major: ${selectedMajor}, Semester: ${selectedSemester}`);
+    alert(
+      `Generating report for Major: ${selectedMajor}, Semester: ${selectedSemester}`,
+    );
   };
 
   return (
@@ -129,10 +131,18 @@ const GPASummaryReport: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><strong>Major</strong></TableCell>
-              <TableCell><strong>Highest GPA</strong></TableCell>
-              <TableCell><strong>Lowest GPA</strong></TableCell>
-              <TableCell><strong>Average GPA</strong></TableCell>
+              <TableCell>
+                <strong>Major</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Highest GPA</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Lowest GPA</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Average GPA</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -168,7 +178,8 @@ const GPASummaryReport: React.FC = () => {
           * Filters are available to select major and semester.
         </Typography>
         <Typography variant="caption" color="textSecondary" display="block">
-          * The "Generate Report" button refreshes the report based on selected filters.
+          * The "Generate Report" button refreshes the report based on selected
+          filters.
         </Typography>
         <Typography variant="caption" color="textSecondary" display="block">
           * The report table displays the highest, lowest, and average GPAs.
@@ -182,4 +193,3 @@ const GPASummaryReport: React.FC = () => {
 };
 
 export default GPASummaryReport;
-

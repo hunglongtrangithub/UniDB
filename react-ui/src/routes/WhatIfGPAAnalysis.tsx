@@ -15,6 +15,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { supabase } from "../services/client";
+import { useSelector } from "react-redux";
 
 const gradePointMap: { [key: string]: number } = {
   A: 4.0,
@@ -24,6 +26,12 @@ const gradePointMap: { [key: string]: number } = {
   F: 0.0,
 };
 
+const courseCreditMap: { [key: string]: number } = {
+  course1: 3,
+  course2: 4,
+  course3: 2,
+};
+
 const WhatIfGPAAnalysis: React.FC = () => {
   const navigate = useNavigate();
 
@@ -31,12 +39,6 @@ const WhatIfGPAAnalysis: React.FC = () => {
   const [courses, setCourses] = useState([
     { course: "", credits: 0, grade: "" },
   ]);
-
-  const courseCreditMap: { [key: string]: number } = {
-    course1: 3,
-    course2: 4,
-    course3: 2,
-  };
 
   const handleAddRow = () => {
     setCourses([...courses, { course: "", credits: 0, grade: "" }]);

@@ -74,8 +74,11 @@ const TeachingScheduleView: React.FC = () => {
     ],
   };
 
-  const [selectedSemester, setSelectedSemester] = useState<keyof typeof scheduleData>("fall2023");
-  const [schedule, setSchedule] = useState<Schedule[]>(scheduleData[selectedSemester]);
+  const [selectedSemester, setSelectedSemester] =
+    useState<keyof typeof scheduleData>("fall2023");
+  const [schedule, setSchedule] = useState<Schedule[]>(
+    scheduleData[selectedSemester],
+  );
 
   const handleSemesterChange = (event: SelectChangeEvent) => {
     const semester = event.target.value as keyof typeof scheduleData; // Explicitly cast the key
@@ -122,12 +125,24 @@ const TeachingScheduleView: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><strong>Course</strong></TableCell>
-              <TableCell><strong>Course Name</strong></TableCell>
-              <TableCell><strong>Days</strong></TableCell>
-              <TableCell><strong>Time</strong></TableCell>
-              <TableCell><strong>Room</strong></TableCell>
-              <TableCell><strong>Enrollment</strong></TableCell>
+              <TableCell>
+                <strong>Course</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Course Name</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Days</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Time</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Room</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Enrollment</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

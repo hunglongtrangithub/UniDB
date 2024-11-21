@@ -13,7 +13,10 @@ import { RootState } from "../store";
 import { useNavigate } from "react-router-dom";
 
 // Define use cases for each role
-const roleUseCases: Record<string, { id: string; title: string; description: string; route: string }[]> = {
+const roleUseCases: Record<
+  string,
+  { id: string; title: string; description: string; route: string }[]
+> = {
   student: [
     {
       id: "UC04",

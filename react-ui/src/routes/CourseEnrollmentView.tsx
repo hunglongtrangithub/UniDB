@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Box,
@@ -37,8 +36,11 @@ const CourseEnrollmentView: React.FC = () => {
     ],
   };
 
-  const [selectedCourse, setSelectedCourse] = useState<keyof typeof enrollmentData>("cs101_fall2023");
-  const [enrollments, setEnrollments] = useState(enrollmentData[selectedCourse]);
+  const [selectedCourse, setSelectedCourse] =
+    useState<keyof typeof enrollmentData>("cs101_fall2023");
+  const [enrollments, setEnrollments] = useState(
+    enrollmentData[selectedCourse],
+  );
 
   const handleCourseChange = (event: SelectChangeEvent) => {
     const course = event.target.value as keyof typeof enrollmentData;
@@ -85,9 +87,15 @@ const CourseEnrollmentView: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><strong>Student ID</strong></TableCell>
-              <TableCell><strong>Name</strong></TableCell>
-              <TableCell><strong>Enrollment Status</strong></TableCell>
+              <TableCell>
+                <strong>Student ID</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Name</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Enrollment Status</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -140,4 +140,3 @@ const ManageStudentMajor: React.FC = () => {
 };
 
 export default ManageStudentMajor;
-

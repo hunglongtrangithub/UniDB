@@ -20,8 +20,18 @@ const StudentEnrollmentForm: React.FC = () => {
 
   // Sample data for courses
   const courseOptions = [
-    { value: "offering1", label: "Course 1 - Fall 2023", capacity: 30, enrolled: 25 },
-    { value: "offering2", label: "Course 2 - Spring 2024", capacity: 20, enrolled: 20 },
+    {
+      value: "offering1",
+      label: "Course 1 - Fall 2023",
+      capacity: 30,
+      enrolled: 25,
+    },
+    {
+      value: "offering2",
+      label: "Course 2 - Spring 2024",
+      capacity: 20,
+      enrolled: 20,
+    },
   ];
 
   // Sample data for validation
@@ -35,7 +45,10 @@ const StudentEnrollmentForm: React.FC = () => {
     setErrorMessage(null);
 
     // E1: Department Mismatch
-    if (studentSearch !== studentData.id || studentData.department !== advisorDepartment) {
+    if (
+      studentSearch !== studentData.id ||
+      studentData.department !== advisorDepartment
+    ) {
       setErrorMessage("Error: Student is not in your department.");
       return;
     }

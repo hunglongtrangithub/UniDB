@@ -25,6 +25,7 @@ const App: React.FC = () => {
         if (session) {
           dispatch(
             setUser({
+              userId: session.user.id,
               userRole: session.user.user_metadata.role,
               userName: `${session.user.user_metadata.first_name} ${session.user.user_metadata.last_name}`,
             }),
@@ -51,12 +52,21 @@ const App: React.FC = () => {
         <Route path="/what-if-analysis" element={<WhatIfGPAAnalysis />} />
         <Route path="/transcript-view" element={<TranscriptView />} />
         /* instructor pages */
-        <Route path="/teaching-schedule-view" element={<TeachingScheduleView />} />
-        <Route path="/course-enrollments-view" element={<CourseEnrollmentView />} />
+        <Route
+          path="/teaching-schedule-view"
+          element={<TeachingScheduleView />}
+        />
+        <Route
+          path="/course-enrollments-view"
+          element={<CourseEnrollmentView />}
+        />
         /* advisor pages */
         <Route path="/enroll-student" element={<StudentEnrollmentForm />} />
         <Route path="/gpa-summary-view" element={<GPASummaryView />} />
-        <Route path="/manage-student-major" element={<ManageStudentMajorForm />} />
+        <Route
+          path="/manage-student-major"
+          element={<ManageStudentMajorForm />}
+        />
         /* staff pages */
         {/* <Route path="/add-course" element={<AddCourse />} /> */}
         {/* <Route path="/generate-department-report" element={<GenerateDepartmentReport />} /> */}
