@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Typography,
@@ -12,38 +12,75 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { getStudentInfo } from "../services/users";
+import { getStudentCourseEnrollments } from "../services/courses";
+import { calculateGPA } from "../utils/grades";
 
 const TranscriptView: React.FC = () => {
   const navigate = useNavigate();
+  const { userId } = useSelector((state: RootState) => state.user);
+  const [studentInfo, setStudentInfo] = React.useState({
+    name: "",
+    id: "",
+    major: "",
+  });
+  interface TranscriptRow {
+    semester: string;
+    course: string;
+    courseName: string;
+    credits: number;
+    grade: string;
+  }
 
-  const studentInfo = {
-    name: "John Doe",
-    id: "12345678",
-    major: "Computer Science",
-  };
+  const [transcriptData, setTranscriptData] = React.useState<TranscriptRow[]>(
+    [],
+  );
+  const [gpaInfo, setGPAInfo] = React.useState({
+    cumulativeGPA: 0,
+    totalCredits: 0,
+  });
 
-  const transcriptData = [
-    {
-      semester: "Fall 2022",
-      course: "CS101",
-      courseName: "Introduction to Computer Science",
-      credits: 3,
-      grade: "A",
-    },
-    {
-      semester: "Fall 2022",
-      course: "MATH201",
-      courseName: "Calculus I",
-      credits: 4,
-      grade: "B+",
-    },
-    // Add more rows as needed
-  ];
+  useEffect(() => {
+    const fetchStudentInfo = async () => {
+      if (userId) {
+        const studentInfo = await getStudentInfo(userId);
+        console.log(studentInfo);
+        if (studentInfo) {
+          setStudentInfo({
+            name: `${studentInfo.first_name} ${studentInfo.last_name}`,
+            id: studentInfo.university_number,
+            major: studentInfo.major,
+          });
+        }
 
-  const gpaInfo = {
-    cumulativeGPA: 3.75,
-    totalCredits: 30,
-  };
+        const studentCourses = await getStudentCourseEnrollments(userId);
+        console.log(studentCourses);
+        if (studentCourses) {
+          const transcriptData = studentCourses.map((course) => ({
+            semester: `${course.course_offerings.semesters.season} ${course.course_offerings.semesters.year}`,
+            course: `${course.course_offerings.courses.prefix}${course.course_offerings.courses.number}`,
+            courseName: course.course_offerings.courses.name,
+            credits: course.course_offerings.courses.credits,
+            grade: course.grade,
+          }));
+          setTranscriptData(transcriptData);
+
+          setGPAInfo({
+            cumulativeGPA: calculateGPA(transcriptData) || 0,
+            totalCredits: transcriptData.reduce(
+              (acc, course) => acc + course.credits,
+              0,
+            ),
+          });
+        }
+      }
+    };
+    fetchStudentInfo();
+
+    // Calculate GPA
+  }, [userId]);
 
   return (
     <Box
