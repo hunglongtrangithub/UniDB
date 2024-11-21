@@ -26,7 +26,6 @@ export const getStudentInfo = async (studentId: string) => {
     console.error("Error fetching student:", studentError.message);
     return null;
   }
-
   const studentInfo = {
     id: student.id,
     university_number: student.university_number,
