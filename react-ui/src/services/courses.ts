@@ -11,6 +11,7 @@ export const getStudentCourseEnrollments = async (studentId: string) => {
     .select(
       `
       grade,
+      course_offering_id,
       course_offerings (
         courses (
           credits, name, prefix, number
@@ -112,3 +113,26 @@ export const getInstructorCourseEnrollments = async (instructorId: string) => {
 
   return courseEnrollments;
 };
+
+// TODO: have a semesterId parameter to filter by semester
+export const getCourseOfferings = async () => {
+  const { data: courseOfferings, error } = await supabase
+    .from("course_offerings")
+    .select(
+      `
+      id,
+      courses (name, prefix, number),
+      semesters (year, season),
+      rooms (capacity),
+      course_enrollments (id)
+    `,
+    );
+
+  if (error) {
+    console.error("Error fetching course offerings:", error.message);
+    return null;
+  }
+
+  return courseOfferings;
+}
+
