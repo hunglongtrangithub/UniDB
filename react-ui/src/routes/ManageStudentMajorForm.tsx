@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -6,8 +6,12 @@ import {
   Select,
   MenuItem,
   Button,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getStudentByUniversityNumber } from "../services/users"; // Assuming these functions exist
+import { getAllMajors } from "../services/majors";
 
 const ManageStudentMajor: React.FC = () => {
   const navigate = useNavigate();
@@ -16,24 +20,76 @@ const ManageStudentMajor: React.FC = () => {
   const [studentSearch, setStudentSearch] = useState<string>("");
   const [currentMajor, setCurrentMajor] = useState<string>(""); // Example current major
   const [newMajor, setNewMajor] = useState<string>("");
+  const [studentInfo, setStudentInfo] = useState<any>(null);
+  const [majorOptions, setMajorOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Sample new major options
-  const majorOptions = [
-    { value: "", label: "-- Select New Major --" },
-    { value: "cs", label: "Computer Science" },
-    { value: "math", label: "Mathematics" },
-    { value: "eng", label: "English" },
-  ];
+  useEffect(() => {
+    const fetchMajors = async () => {
+      const majors = await getAllMajors(); // Assuming this function fetches the list of majors
+      if (majors) {
+        const options = majors.map((major: any) => ({
+          value: major.id,
+          label: major.name,
+        }));
+        setMajorOptions(options);
+      }
+    };
+
+    fetchMajors();
+  }, []);
+
+  useEffect(() => {
+    const fetchStudentInfo = async () => {
+      console.log(studentSearch.length);
+      setSuccessMessage(null);
+      if (!studentSearch) {
+        setErrorMessage(null);
+        setStudentInfo(null);
+        return;
+      }
+      if (!studentSearch.match(/^U[0-9]{8}$/)) {
+        setErrorMessage(
+          "Error: Invalid student ID format. It should be in the form 'U12345678'.",
+        );
+        setStudentInfo(null);
+        return;
+      }
+
+      setLoading(true);
+      const fetchedStudentInfo =
+        await getStudentByUniversityNumber(studentSearch);
+      setLoading(false);
+
+      if (!fetchedStudentInfo) {
+        setErrorMessage("Error: Student not found.");
+        setStudentInfo(null);
+        return;
+      }
+
+      setStudentInfo(fetchedStudentInfo);
+      setCurrentMajor(fetchedStudentInfo.major_name);
+      setErrorMessage(null);
+    };
+
+    fetchStudentInfo();
+  }, [studentSearch]);
 
   const handleUpdateMajor = () => {
     if (!studentSearch) {
-      alert("Please search for a student.");
+      setErrorMessage("Please enter a student ID.");
     } else if (!newMajor) {
-      alert("Please select a new major.");
+      setErrorMessage("Please select a new major.");
+    } else if (studentInfo.major_name === newMajor) {
+      setErrorMessage("The new major is the same as the current major.");
     } else {
-      // Simulate updating major logic
-      alert(`Updated ${studentSearch}'s major to ${newMajor}`);
-      // Add API call or logic here to update the major
+      console.log("Changing major...");
+      setErrorMessage(null);
+      setSuccessMessage("Student enrolled successfully!");
     }
   };
 
@@ -52,6 +108,20 @@ const ManageStudentMajor: React.FC = () => {
         Manage Student Major
       </Typography>
 
+      {/* Error Message */}
+      {errorMessage && (
+        <Alert severity="error" sx={{ marginBottom: 3 }}>
+          {errorMessage}
+        </Alert>
+      )}
+
+      {/* Success Message */}
+      {successMessage && (
+        <Alert severity="success" sx={{ marginBottom: 3 }}>
+          {successMessage}
+        </Alert>
+      )}
+
       {/* Student Search */}
       <Box sx={{ marginBottom: 3 }}>
         <Typography variant="body1" gutterBottom>
@@ -59,25 +129,35 @@ const ManageStudentMajor: React.FC = () => {
         </Typography>
         <TextField
           fullWidth
-          placeholder="Enter student ID or name"
+          placeholder="Enter student ID"
           value={studentSearch}
           onChange={(e) => setStudentSearch(e.target.value)}
         />
       </Box>
 
-      {/* Current Major */}
-      <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="body1" gutterBottom>
-          Current Major:
-        </Typography>
-        <TextField
-          fullWidth
-          value={currentMajor}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-      </Box>
+      {/* Student Info Box */}
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        studentInfo && (
+          <Box
+            sx={{
+              marginBottom: 3,
+              padding: 2,
+              border: "1px solid #ced4da",
+              borderRadius: "5px",
+            }}
+          >
+            <Typography variant="body1">
+              <strong>Name:</strong> {studentInfo.first_name}{" "}
+              {studentInfo.last_name}
+            </Typography>
+            <Typography variant="body1">
+              <strong>Current Major:</strong> {currentMajor}
+            </Typography>
+          </Box>
+        )
+      )}
 
       {/* New Major Selection */}
       <Box sx={{ marginBottom: 3 }}>
@@ -90,6 +170,9 @@ const ManageStudentMajor: React.FC = () => {
           onChange={(e) => setNewMajor(e.target.value)}
           displayEmpty
         >
+          <MenuItem value="">
+            <em>-- Select New Major --</em>
+          </MenuItem>
           {majorOptions.map((major) => (
             <MenuItem key={major.value} value={major.value}>
               {major.label}

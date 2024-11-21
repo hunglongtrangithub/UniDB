@@ -18,7 +18,10 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { getStudentCourseEnrollments, getCourses } from "../services/courses";
+import {
+  getStudentCourseEnrollments,
+  getAllCourses,
+} from "../services/courses";
 import { calculateGPA } from "../utils/grades";
 
 const WhatIfGPAAnalysis: React.FC = () => {
@@ -54,7 +57,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
         }
       }
 
-      const courses = await getCourses();
+      const courses = await getAllCourses();
       if (courses) {
         setCourseCreditMap(
           courses.reduce((acc: any, course: any) => {

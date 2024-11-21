@@ -36,7 +36,7 @@ export const getStudentCourseEnrollments = async (studentId: string) => {
   return enrollments;
 };
 
-export const getCourses = async () => {
+export const getAllCourses = async () => {
   const { data: courses, error: coursesError } = await supabase
     .from("courses")
     .select("*");
