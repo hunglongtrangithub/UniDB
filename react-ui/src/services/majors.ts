@@ -3,7 +3,9 @@ import { getStudentCourseEnrollments } from "./courses";
 import { calculateGPA } from "../utils/grades";
 
 export const getAllMajors = async () => {
-  const { data: majors, error } = await supabase.from("majors").select("*");
+  const { data: majors, error } = await supabase
+    .from("majors")
+    .select("id, name, is_unique, departments(name)");
 
   if (error) {
     console.error("Error fetching majors:", error.message);

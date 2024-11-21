@@ -19,9 +19,14 @@ import {
   getAllSemesters,
   getGPAByMajor,
 } from "../services/majors";
+import { getDepartmentsByAdvisor } from "../services/users";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const GPASummaryReport: React.FC = () => {
   const navigate = useNavigate();
+  const userId = useSelector((state: RootState) => state.user.userId);
+  const [advisorDepartments, setAdvisorDepartments] = useState<string[]>([]);
 
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [selectedSemester, setSelectedSemester] = useState<string>("");
@@ -40,19 +45,41 @@ const GPASummaryReport: React.FC = () => {
   >([]);
 
   useEffect(() => {
+    const fetchAdvisorDepartments = async () => {
+      if (!userId) return;
+      const departments = await getDepartmentsByAdvisor(userId);
+      if (departments) {
+        const departmentNames = departments.map(
+          (dept: any) => dept.departments.name,
+        );
+        console.log("Advisor departments:", departmentNames);
+        setAdvisorDepartments(departmentNames);
+      }
+    };
+
+    fetchAdvisorDepartments();
+  }, [userId]);
+
+  useEffect(() => {
     const fetchMajorsAndGPA = async () => {
       const fetchedMajors = await getAllMajors();
-      if (fetchedMajors) {
+      if (!fetchedMajors) return;
+      console.log("Fetched majors:", fetchedMajors);
+      console.log("Advisor departments:", advisorDepartments);
+      const filteredMajors = fetchedMajors.filter((major: any) =>
+        advisorDepartments.includes(major.departments.name),
+      );
+      if (filteredMajors) {
         setMajors([
           { value: "", label: "-- All Majors --" },
-          ...fetchedMajors.map((major: any) => ({
+          ...filteredMajors.map((major: any) => ({
             value: major.id,
             label: major.name,
           })),
         ]);
 
         const gpaData = await Promise.all(
-          fetchedMajors.map(async (major: any) => {
+          filteredMajors.map(async (major: any) => {
             if (selectedMajor && selectedMajor !== major.id) return null;
             const gpaStats = await getGPAByMajor(major.id);
             return {
@@ -83,7 +110,7 @@ const GPASummaryReport: React.FC = () => {
 
     fetchMajorsAndGPA();
     fetchSemesters();
-  }, [selectedMajor]);
+  }, [selectedMajor, advisorDepartments]);
 
   const handleGenerateReport = () => {
     alert(
