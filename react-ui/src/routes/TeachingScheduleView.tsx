@@ -35,11 +35,11 @@ const TeachingScheduleView: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const [scheduleData, setScheduleData] = useState<Record<string, Schedule[]>>(
-    {}
+    {},
   );
-  const [semesters, setSemesters] = useState<{ value: string; label: string }[]>(
-    []
-  );
+  const [semesters, setSemesters] = useState<
+    { value: string; label: string }[]
+  >([]);
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Loading state
@@ -94,9 +94,7 @@ const TeachingScheduleView: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
   return (

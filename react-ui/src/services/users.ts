@@ -37,8 +37,9 @@ export const getStudentInfo = async (studentId: string) => {
   return studentInfo;
 };
 
-
-export const getStudentByUniversityNumber = async (universityNumber: string) => {
+export const getStudentByUniversityNumber = async (
+  universityNumber: string,
+) => {
   // Get student id by university number
   const { data: student, error: studentError } = await supabase
     .from("students")
@@ -73,4 +74,4 @@ export const getDepartmentsByAdvisor = async (advisorId: string) => {
     return null;
   }
   return departments;
-}
+};

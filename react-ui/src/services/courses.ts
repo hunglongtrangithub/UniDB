@@ -134,5 +134,4 @@ export const getCourseOfferings = async () => {
   }
 
   return courseOfferings;
-}
-
+};

@@ -85,10 +85,12 @@ const TranscriptView: React.FC = () => {
     fetchStudentInfo();
   }, [userId]);
 
+  const handleGenerateReport = () => {
+    alert("Generating report...");
+  };
+
   if (loading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
   return (
@@ -117,6 +119,14 @@ const TranscriptView: React.FC = () => {
         <Typography>
           <strong>Major:</strong> {studentInfo.major}
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleGenerateReport}
+          sx={{ alignSelf: "center", marginTop: "8px" }}
+        >
+          Generate Transcript
+        </Button>
       </Box>
 
       {/* Transcript Table */}

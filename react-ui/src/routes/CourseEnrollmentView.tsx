@@ -96,9 +96,7 @@ const CourseEnrollmentView: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
   return (

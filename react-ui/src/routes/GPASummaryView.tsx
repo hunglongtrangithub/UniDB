@@ -14,7 +14,11 @@ import {
   Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getAllMajors, getAllSemesters, getGPAByMajor } from "../services/majors";
+import {
+  getAllMajors,
+  getAllSemesters,
+  getGPAByMajor,
+} from "../services/majors";
 
 const GPASummaryReport: React.FC = () => {
   const navigate = useNavigate();
@@ -22,11 +26,18 @@ const GPASummaryReport: React.FC = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [reportData, setReportData] = useState<
-    { major: string; highestGPA: number | null; lowestGPA: number | null; averageGPA: number | null }[]
+    {
+      major: string;
+      highestGPA: number | null;
+      lowestGPA: number | null;
+      averageGPA: number | null;
+    }[]
   >([]);
 
   const [majors, setMajors] = useState<{ value: string; label: string }[]>([]);
-  const [semesters, setSemesters] = useState<{ value: string; label: string }[]>([]);
+  const [semesters, setSemesters] = useState<
+    { value: string; label: string }[]
+  >([]);
 
   useEffect(() => {
     const fetchMajorsAndGPA = async () => {
@@ -50,7 +61,7 @@ const GPASummaryReport: React.FC = () => {
               lowestGPA: gpaStats?.lowestGPA || null,
               averageGPA: gpaStats?.averageGPA || null,
             };
-          })
+          }),
         );
 
         setReportData(gpaData.filter((data) => data !== null));

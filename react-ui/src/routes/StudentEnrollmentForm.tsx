@@ -199,6 +199,9 @@ const StudentEnrollmentForm: React.FC = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Enroll Student in Course
       </Typography>
+      <Typography variant="body1" align="center" gutterBottom>
+        Semester: Fall 2024
+      </Typography>
       {/* Error Message */}
       {errorMessage && (
         <Alert severity="error" sx={{ marginBottom: 3 }}>

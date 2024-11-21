@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-} from "@mui/material";
+import { Box, Typography, Card, CardContent, Grid } from "@mui/material";
 import LoadingScreen from "../components/LoadingScreen";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
@@ -86,9 +80,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   if (!userName || !userRole) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
   const useCases = roleUseCases[userRole.toLowerCase()] || [];
