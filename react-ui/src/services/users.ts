@@ -75,3 +75,18 @@ export const getDepartmentsByAdvisor = async (advisorId: string) => {
   }
   return departments;
 };
+
+export const getStaffDepartment = async (staffId: string) => {
+  // get department for staff
+  const { data: department, error } = await supabase
+    .from("staff")
+    .select("departments (*)")
+    .eq("id", staffId).single();
+
+  if (error) {
+    console.error("Error fetching department:", error.message);
+    return null;
+  }
+
+  return department;
+}

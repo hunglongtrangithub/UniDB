@@ -12,6 +12,7 @@ import TranscriptView from "./routes/TranscriptView";
 import StudentEnrollmentForm from "./routes/StudentEnrollmentForm";
 import GPASummaryView from "./routes/GPASummaryView";
 import ManageStudentMajorForm from "./routes/ManageStudentMajorForm";
+import AddCourse from "./routes/AddCourse";
 import { supabase } from "./services/client";
 import { setUser, clearUser } from "./reducers/userReducer";
 
@@ -48,10 +49,10 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        /* student pages */
+        {/* student pages */}
         <Route path="/what-if-analysis" element={<WhatIfGPAAnalysis />} />
         <Route path="/transcript-view" element={<TranscriptView />} />
-        /* instructor pages */
+        {/* instructor pages */}
         <Route
           path="/teaching-schedule-view"
           element={<TeachingScheduleView />}
@@ -60,16 +61,15 @@ const App: React.FC = () => {
           path="/course-enrollments-view"
           element={<CourseEnrollmentView />}
         />
-        /* advisor pages */
+        {/* advisor pages */}
         <Route path="/enroll-student" element={<StudentEnrollmentForm />} />
         <Route path="/gpa-summary-view" element={<GPASummaryView />} />
         <Route
           path="/manage-student-major"
           element={<ManageStudentMajorForm />}
         />
-        /* staff pages */
-        {/* <Route path="/add-course" element={<AddCourse />} /> */}
-        {/* <Route path="/generate-department-report" element={<GenerateDepartmentReport />} /> */}
+        {/* staff pages */}
+        <Route path="/add-course" element={<AddCourse />} />
       </Routes>
     </Router>
   );
