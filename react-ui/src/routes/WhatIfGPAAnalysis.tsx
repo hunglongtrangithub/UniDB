@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -15,8 +15,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { supabase } from "../services/client";
 import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { getStudentCourseEnrollments, getCourses } from "../services/courses";
 
 const gradePointMap: { [key: string]: number } = {
   A: 4.0,
@@ -26,19 +27,69 @@ const gradePointMap: { [key: string]: number } = {
   F: 0.0,
 };
 
-const courseCreditMap: { [key: string]: number } = {
-  course1: 3,
-  course2: 4,
-  course3: 2,
+const calculateNewGPA = (
+  courses: {
+    credits: number;
+    grade: string;
+  }[],
+) => {
+  let totalCredits = 0;
+  let totalPoints = 0;
+
+  courses.forEach((course) => {
+    if (course.grade && course.credits) {
+      totalCredits += course.credits;
+      totalPoints += course.credits * (gradePointMap[course.grade] || 0);
+    }
+  });
+
+  const newGPA = totalCredits > 0 ? totalPoints / totalCredits : null;
+  return newGPA;
 };
 
 const WhatIfGPAAnalysis: React.FC = () => {
   const navigate = useNavigate();
 
-  const [currentGPA, setCurrentGPA] = useState(3.5); // Example current GPA
+  const [currentGPA, setCurrentGPA] = useState(0); // Example current GPA
+  const [newGPA, setNewGPA] = useState<number | null>(null); // New GPA for analysis
   const [courses, setCourses] = useState([
     { course: "", credits: 0, grade: "" },
-  ]);
+  ]); // Hypothetical courses
+
+  const [courseCreditMap, setCourseCreditMap] = useState<{
+    [key: string]: number;
+  }>({});
+
+  const userId = useSelector((state: RootState) => state.user.userId);
+
+  useEffect(() => {
+    async function fetch() {
+      if (userId) {
+        const enrollments = await getStudentCourseEnrollments(userId);
+        if (enrollments) {
+          const grades = enrollments.map((enrollment: any) => ({
+            grade: enrollment.grade,
+            credits: enrollment.course_offerings.courses.credits,
+          }));
+          const calculatedGPA = calculateNewGPA(grades);
+          if (calculatedGPA !== null) {
+            setCurrentGPA(parseFloat(calculatedGPA.toFixed(2)));
+          }
+        }
+      }
+
+      const courses = await getCourses();
+      if (courses) {
+        setCourseCreditMap(
+          courses.reduce((acc: any, course: any) => {
+            acc[course.name] = course.credits;
+            return acc;
+          }, {}),
+        );
+      }
+    }
+    fetch();
+  }, [userId]);
 
   const handleAddRow = () => {
     setCourses([...courses, { course: "", credits: 0, grade: "" }]);
@@ -47,7 +98,10 @@ const WhatIfGPAAnalysis: React.FC = () => {
   const handleRemoveRow = (index: number) => {
     const updatedCourses = courses.filter((_, i) => i !== index);
     setCourses(updatedCourses);
-    calculateNewGPA(updatedCourses); // Recalculate GPA after removal
+    const calculatedGPA = calculateNewGPA(updatedCourses);
+    if (calculatedGPA !== null) {
+      setNewGPA(parseFloat(calculatedGPA.toFixed(2)));
+    }
   };
 
   const handleInputChange = (
@@ -55,6 +109,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
     field: "course" | "grade", // Only course and grade are editable
     value: any,
   ) => {
+    // console.log(index, field, value);
     const updatedCourses = [...courses];
     updatedCourses[index] = {
       ...updatedCourses[index], // Spread existing course data
@@ -64,29 +119,12 @@ const WhatIfGPAAnalysis: React.FC = () => {
           ? courseCreditMap[value] || 0
           : updatedCourses[index].credits, // Update credits
     };
+    console.log(updatedCourses);
     setCourses(updatedCourses);
-    calculateNewGPA(updatedCourses);
-  };
-
-  const calculateNewGPA = (
-    courses: {
-      course: string;
-      credits: number;
-      grade: string;
-    }[],
-  ) => {
-    let totalCredits = 0;
-    let totalPoints = 0;
-
-    courses.forEach((course) => {
-      if (course.grade && course.credits) {
-        totalCredits += course.credits;
-        totalPoints += course.credits * (gradePointMap[course.grade] || 0);
-      }
-    });
-
-    const newGPA = totalCredits > 0 ? totalPoints / totalCredits : currentGPA;
-    setCurrentGPA(parseFloat(newGPA.toFixed(2))); // Update dynamically
+    const calculatedGPA = calculateNewGPA(updatedCourses);
+    if (calculatedGPA !== null) {
+      setNewGPA(parseFloat(calculatedGPA.toFixed(2)));
+    }
   };
 
   return (
@@ -96,6 +134,9 @@ const WhatIfGPAAnalysis: React.FC = () => {
       </Typography>
       <Typography variant="h6" gutterBottom>
         Current GPA: <strong>{currentGPA}</strong>
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        New GPA: <strong>{newGPA !== null ? newGPA : "N/A"}</strong>
       </Typography>
       <Typography variant="body1" gutterBottom>
         Add hypothetical courses and expected grades to see the impact on your
@@ -123,9 +164,11 @@ const WhatIfGPAAnalysis: React.FC = () => {
                   fullWidth
                 >
                   <MenuItem value="">-- Select Course --</MenuItem>
-                  <MenuItem value="course1">Course 1</MenuItem>
-                  <MenuItem value="course2">Course 2</MenuItem>
-                  <MenuItem value="course3">Course 3</MenuItem>
+                  {Object.keys(courseCreditMap).map((course) => (
+                    <MenuItem key={course} value={course}>
+                      {course}
+                    </MenuItem>
+                  ))}
                 </Select>
               </TableCell>
               <TableCell>
@@ -148,7 +191,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
                   <MenuItem value="F">F</MenuItem>
                 </Select>
               </TableCell>
-              <TableCell>
+              {index !== 0 ? <TableCell>
                 <IconButton
                   color="error"
                   onClick={() => handleRemoveRow(index)}
@@ -156,6 +199,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
+              : <TableCell></TableCell>}
             </TableRow>
           ))}
         </TableBody>

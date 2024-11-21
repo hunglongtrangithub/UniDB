@@ -126,15 +126,15 @@ async function seedDatabase() {
 
     // Course Enrollments
     const courseEnrollments = [
-      { student_id: getUserById(1), course_offering_id: 1 }, // Alice enrolled in CS 101
-      { student_id: getUserById(1), course_offering_id: 2 }, // Alice enrolled in CS 102
-      { student_id: getUserById(1), course_offering_id: 3 }, // Alice enrolled in CS 103
-      { student_id: getUserById(2), course_offering_id: 4 }, // Bob enrolled in IT 101
-      { student_id: getUserById(2), course_offering_id: 5 }, // Bob enrolled in IT 102
-      { student_id: getUserById(2), course_offering_id: 6 }, // Bob enrolled in IT 103
-      { student_id: getUserById(3), course_offering_id: 7 }, // Charlie enrolled in CY 101
-      { student_id: getUserById(3), course_offering_id: 8 }, // Charlie enrolled in CY 102
-      { student_id: getUserById(3), course_offering_id: 9 }, // Charlie enrolled in CY 103
+      { student_id: getUserById(1), course_offering_id: 1, grade: "I" }, // Alice enrolled in CS 101
+      { student_id: getUserById(1), course_offering_id: 2, grade: "A" }, // Alice enrolled in CS 102
+      { student_id: getUserById(1), course_offering_id: 3, grade: "B" }, // Alice enrolled in CS 103
+      { student_id: getUserById(2), course_offering_id: 4, grade: "I" }, // Bob enrolled in IT 101
+      { student_id: getUserById(2), course_offering_id: 5, grade: "A" }, // Bob enrolled in IT 102
+      { student_id: getUserById(2), course_offering_id: 6, grade: "B" }, // Bob enrolled in IT 103
+      { student_id: getUserById(3), course_offering_id: 7, grade: "I" }, // Charlie enrolled in CY 101
+      { student_id: getUserById(3), course_offering_id: 8, grade: "A" }, // Charlie enrolled in CY 102
+      { student_id: getUserById(3), course_offering_id: 9, grade: "B" }, // Charlie enrolled in CY 103
     ];
     await supabase.from('course_enrollments').insert(courseEnrollments);
     console.log('Seeded course_enrollments');

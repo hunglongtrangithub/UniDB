@@ -59,15 +59,15 @@ VALUES
 -- COURSES
 INSERT INTO public.courses (prefix, number, name, credits, department_id)
 VALUES 
-('CS', '101', 'Introduction to Computer Science', 4, 1),
+('CS', '101', 'Introduction to Computer Science', 3, 1),
 ('CS', '102', 'Data Structures', 4, 1),
-('CS', '103', 'Algorithms', 4, 1),
-('IT', '101', 'Introduction to Information Technology', 4, 2),
+('CS', '103', 'Algorithms', 3, 1),
+('IT', '101', 'Introduction to Information Technology', 3, 2),
 ('IT', '102', 'Networking', 4, 2),
-('IT', '103', 'Database Systems', 4, 2),
-('CY', '101', 'Introduction to Cybersecurity', 4, 3),
+('IT', '103', 'Database Systems', 3, 2),
+('CY', '101', 'Introduction to Cybersecurity', 3, 3),
 ('CY', '102', 'Cryptography', 4, 3),
-('CY', '103', 'Network Security', 4, 3);
+('CY', '103', 'Network Security', 3, 3);
 
 -- SEMESTERS
 INSERT INTO public.semesters (year, season)
