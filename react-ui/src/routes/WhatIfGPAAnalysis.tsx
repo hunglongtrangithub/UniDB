@@ -98,9 +98,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
     };
     setCourses(updatedCourses);
     const calculatedGPA = calculateGPA(updatedCourses);
-    if (calculatedGPA !== null) {
-      setNewGPA(parseFloat(calculatedGPA.toFixed(2)));
-    }
+    setNewGPA(calculatedGPA !== null ? parseFloat(calculatedGPA.toFixed(2)) : null);
   };
 
   if (loading) {

@@ -71,7 +71,7 @@ const TranscriptView: React.FC = () => {
 
           const gpa = calculateGPA(transcriptData);
           setGPAInfo({
-            cumulativeGPA: gpa !== null ? parseFloat(gpa.toFixed(1)) : 0,
+            cumulativeGPA: gpa !== null ? parseFloat(gpa.toFixed(2)) : 0,
             totalCredits: transcriptData.reduce(
               (acc, course) => acc + course.credits,
               0,
