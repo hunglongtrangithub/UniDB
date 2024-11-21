@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -14,44 +14,67 @@ import {
   Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getAllMajors, getAllSemesters, getGPAByMajor } from "../services/majors";
 
 const GPASummaryReport: React.FC = () => {
   const navigate = useNavigate();
 
-  // States for filters and report data
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [selectedSemester, setSelectedSemester] = useState<string>("");
-  const [reportData, setReportData] = useState([
-    {
-      major: "Computer Science",
-      highestGPA: 4.0,
-      lowestGPA: 2.5,
-      averageGPA: 3.2,
-    },
-    {
-      major: "Mathematics",
-      highestGPA: 3.9,
-      lowestGPA: 2.8,
-      averageGPA: 3.4,
-    },
-  ]);
+  const [reportData, setReportData] = useState<
+    { major: string; highestGPA: number | null; lowestGPA: number | null; averageGPA: number | null }[]
+  >([]);
 
-  // Sample filter options
-  const majors = [
-    { value: "", label: "-- All Majors --" },
-    { value: "cs", label: "Computer Science" },
-    { value: "math", label: "Mathematics" },
-  ];
+  const [majors, setMajors] = useState<{ value: string; label: string }[]>([]);
+  const [semesters, setSemesters] = useState<{ value: string; label: string }[]>([]);
 
-  const semesters = [
-    { value: "", label: "-- All Semesters --" },
-    { value: "fall2023", label: "Fall 2023" },
-    { value: "spring2024", label: "Spring 2024" },
-  ];
+  useEffect(() => {
+    const fetchMajorsAndGPA = async () => {
+      const fetchedMajors = await getAllMajors();
+      if (fetchedMajors) {
+        setMajors([
+          { value: "", label: "-- All Majors --" },
+          ...fetchedMajors.map((major: any) => ({
+            value: major.id,
+            label: major.name,
+          })),
+        ]);
+
+        const gpaData = await Promise.all(
+          fetchedMajors.map(async (major: any) => {
+            if (selectedMajor && selectedMajor !== major.id) return null;
+            const gpaStats = await getGPAByMajor(major.id);
+            return {
+              major: major.name,
+              highestGPA: gpaStats?.highestGPA || null,
+              lowestGPA: gpaStats?.lowestGPA || null,
+              averageGPA: gpaStats?.averageGPA || null,
+            };
+          })
+        );
+
+        setReportData(gpaData.filter((data) => data !== null));
+      }
+    };
+
+    const fetchSemesters = async () => {
+      const fetchedSemesters = await getAllSemesters();
+      if (fetchedSemesters) {
+        setSemesters([
+          { value: "", label: "-- All Semesters --" },
+          ...fetchedSemesters.map((semester: any) => ({
+            value: `${semester.year}${semester.season}`,
+            label: `${semester.season} ${semester.year}`,
+          })),
+        ]);
+      }
+    };
+
+    fetchMajorsAndGPA();
+    fetchSemesters();
+  }, [selectedMajor]);
 
   const handleGenerateReport = () => {
-    // Simulate report generation logic
-    // You can replace this with an API call or dynamic logic
     alert(
       `Generating report for Major: ${selectedMajor}, Semester: ${selectedSemester}`,
     );
