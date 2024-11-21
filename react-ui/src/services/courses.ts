@@ -52,3 +52,30 @@ export const getCourses = async () => {
 
   return courses;
 };
+
+export const getInstructorTeachingSchedule = async (instructorId: string) => {
+  // get all course_offerings for instructor
+  // join with courses to get course name
+  // join with semesters to get year and season
+  // join with rooms to get room number, building, and capacity
+  // join with course_enrollments to get student count
+  
+  const { data: teachingSchedule, error } = await supabase
+    .from("course_offerings")
+    .select(`
+      courses (name, prefix, number),
+      semesters (year, season),
+      schedule,
+      rooms (room_number, building, capacity),
+      course_enrollments (id)
+    `)
+    .eq("instructor_id", instructorId);
+
+  if (error) {
+    console.error("Error fetching teaching schedule:", error.message);
+    return null;
+  }
+
+
+  return teachingSchedule;
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -15,6 +15,9 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { getInstructorTeachingSchedule } from "../services/courses";
 
 // Define the type for schedule data
 interface Schedule {
@@ -28,58 +31,59 @@ interface Schedule {
 
 const TeachingScheduleView: React.FC = () => {
   const navigate = useNavigate();
+  const userId = useSelector((state: RootState) => state.user.userId);
 
-  // Sample data for semesters and schedule
-  const semesters = [
-    { value: "fall2023", label: "Fall 2023" },
-    { value: "spring2024", label: "Spring 2024" },
-  ];
-
-  const scheduleData: Record<string, Schedule[]> = {
-    fall2023: [
-      {
-        course: "CS101",
-        courseName: "Introduction to Computer Science",
-        days: "Mon, Wed, Fri",
-        time: "9:00 AM - 10:15 AM",
-        room: "Room 101",
-        enrollment: "30/40",
-      },
-      {
-        course: "CS202",
-        courseName: "Data Structures",
-        days: "Tue, Thu",
-        time: "11:00 AM - 12:15 PM",
-        room: "Room 202",
-        enrollment: "25/35",
-      },
-    ],
-    spring2024: [
-      {
-        course: "CS303",
-        courseName: "Algorithms",
-        days: "Mon, Wed",
-        time: "10:30 AM - 11:45 AM",
-        room: "Room 303",
-        enrollment: "20/30",
-      },
-      {
-        course: "CS404",
-        courseName: "Operating Systems",
-        days: "Tue, Thu",
-        time: "1:00 PM - 2:15 PM",
-        room: "Room 404",
-        enrollment: "18/25",
-      },
-    ],
-  };
+  const [scheduleData, setScheduleData] = useState<Record<string, Schedule[]>>(
+    {},
+  );
+  const [semesters, setSemesters] = useState<
+    { value: string; label: string }[]
+  >([]);
 
   const [selectedSemester, setSelectedSemester] =
-    useState<keyof typeof scheduleData>("fall2023");
-  const [schedule, setSchedule] = useState<Schedule[]>(
-    scheduleData[selectedSemester],
-  );
+    useState<keyof typeof scheduleData>("");
+  console.log(selectedSemester);
+  const [schedule, setSchedule] = useState<Schedule[]>([] as Schedule[]);
 
+  useEffect(() => {
+    const fetchTeachingSchedule = async () => {
+      if (userId) {
+        const teachingSchedule = await getInstructorTeachingSchedule(userId);
+        if (teachingSchedule) {
+          console.log(teachingSchedule);
+          const scheduleData: Record<string, Schedule[]> = {};
+          const semesters: { value: string; label: string }[] = [];
+
+          teachingSchedule.forEach((offering: any) => {
+            const semester = `${offering.semesters.year} ${offering.semesters.season}`;
+            if (!scheduleData[semester]) {
+              scheduleData[semester] = [];
+              semesters.push({ value: semester, label: semester });
+            }
+
+            const schedule: Schedule = {
+              course: `${offering.courses.prefix} ${offering.courses.number}`,
+              courseName: offering.courses.name,
+              days: offering.schedule.days,
+              time: offering.schedule.time,
+              room: `${offering.rooms.building} ${offering.rooms.room_number}`,
+              enrollment: `${offering.course_enrollments.length}/${offering.rooms.capacity}`,
+            };
+            scheduleData[semester].push(schedule);
+          });
+          console.log(scheduleData);
+
+          setScheduleData(scheduleData);
+          setSemesters(semesters);
+          setSelectedSemester(semesters[0].value);
+          setSchedule(scheduleData[semesters[0].value]);
+        }
+      }
+    };
+    fetchTeachingSchedule();
+  }, [userId]);
+
+  console.log(schedule);
   const handleSemesterChange = (event: SelectChangeEvent) => {
     const semester = event.target.value as keyof typeof scheduleData; // Explicitly cast the key
     setSelectedSemester(semester);
