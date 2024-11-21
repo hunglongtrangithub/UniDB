@@ -13,9 +13,12 @@ export const getStudentCourseEnrollments = async (studentId: string) => {
       grade,
       course_offerings (
         courses (
-          credits, name
-          )
+          credits, name, prefix, number
+        ),
+        semesters (
+          year, season
         )
+      )
     `,
     )
     .eq("student_id", studentId);

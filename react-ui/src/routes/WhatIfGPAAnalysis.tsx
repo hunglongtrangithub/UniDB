@@ -18,34 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { getStudentCourseEnrollments, getCourses } from "../services/courses";
-
-const gradePointMap: { [key: string]: number } = {
-  A: 4.0,
-  B: 3.0,
-  C: 2.0,
-  D: 1.0,
-  F: 0.0,
-};
-
-const calculateNewGPA = (
-  courses: {
-    credits: number;
-    grade: string;
-  }[],
-) => {
-  let totalCredits = 0;
-  let totalPoints = 0;
-
-  courses.forEach((course) => {
-    if (course.grade && course.credits) {
-      totalCredits += course.credits;
-      totalPoints += course.credits * (gradePointMap[course.grade] || 0);
-    }
-  });
-
-  const newGPA = totalCredits > 0 ? totalPoints / totalCredits : null;
-  return newGPA;
-};
+import { calculateGPA } from "../utils/grades";
 
 const WhatIfGPAAnalysis: React.FC = () => {
   const navigate = useNavigate();
@@ -71,7 +44,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
             grade: enrollment.grade,
             credits: enrollment.course_offerings.courses.credits,
           }));
-          const calculatedGPA = calculateNewGPA(grades);
+          const calculatedGPA = calculateGPA(grades);
           if (calculatedGPA !== null) {
             setCurrentGPA(parseFloat(calculatedGPA.toFixed(2)));
           }
@@ -98,7 +71,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
   const handleRemoveRow = (index: number) => {
     const updatedCourses = courses.filter((_, i) => i !== index);
     setCourses(updatedCourses);
-    const calculatedGPA = calculateNewGPA(updatedCourses);
+    const calculatedGPA = calculateGPA(updatedCourses);
     if (calculatedGPA !== null) {
       setNewGPA(parseFloat(calculatedGPA.toFixed(2)));
     }
@@ -121,7 +94,7 @@ const WhatIfGPAAnalysis: React.FC = () => {
     };
     console.log(updatedCourses);
     setCourses(updatedCourses);
-    const calculatedGPA = calculateNewGPA(updatedCourses);
+    const calculatedGPA = calculateGPA(updatedCourses);
     if (calculatedGPA !== null) {
       setNewGPA(parseFloat(calculatedGPA.toFixed(2)));
     }
@@ -191,15 +164,18 @@ const WhatIfGPAAnalysis: React.FC = () => {
                   <MenuItem value="F">F</MenuItem>
                 </Select>
               </TableCell>
-              {index !== 0 ? <TableCell>
-                <IconButton
-                  color="error"
-                  onClick={() => handleRemoveRow(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-              : <TableCell></TableCell>}
+              {index !== 0 ? (
+                <TableCell>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleRemoveRow(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              ) : (
+                <TableCell></TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
