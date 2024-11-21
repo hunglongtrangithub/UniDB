@@ -12,13 +12,13 @@ import {
   TableRow,
   Paper,
   Button,
-  CircularProgress,
   SelectChangeEvent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getInstructorCourseEnrollments } from "../services/courses";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import LoadingScreen from "../components/LoadingScreen";
 
 // Define types for enrollment data
 interface Enrollment {
@@ -97,16 +97,7 @@ const CourseEnrollmentView: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <LoadingScreen />
     );
   }
 

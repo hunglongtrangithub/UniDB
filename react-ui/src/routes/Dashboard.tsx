@@ -2,11 +2,11 @@ import React from "react";
 import {
   Box,
   Typography,
-  CircularProgress,
   Card,
   CardContent,
   Grid,
 } from "@mui/material";
+import LoadingScreen from "../components/LoadingScreen";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -87,16 +87,7 @@ const Dashboard: React.FC = () => {
 
   if (!userName || !userRole) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <LoadingScreen />
     );
   }
 

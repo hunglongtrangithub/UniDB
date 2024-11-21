@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -11,6 +11,7 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -21,11 +22,18 @@ import { calculateGPA } from "../utils/grades";
 const TranscriptView: React.FC = () => {
   const navigate = useNavigate();
   const { userId } = useSelector((state: RootState) => state.user);
-  const [studentInfo, setStudentInfo] = React.useState({
+  const [studentInfo, setStudentInfo] = useState({
     name: "",
     id: "",
     major: "",
   });
+  const [transcriptData, setTranscriptData] = useState<TranscriptRow[]>([]);
+  const [gpaInfo, setGPAInfo] = useState({
+    cumulativeGPA: 0,
+    totalCredits: 0,
+  });
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
+
   interface TranscriptRow {
     semester: string;
     course: string;
@@ -34,16 +42,10 @@ const TranscriptView: React.FC = () => {
     grade: string;
   }
 
-  const [transcriptData, setTranscriptData] = React.useState<TranscriptRow[]>(
-    [],
-  );
-  const [gpaInfo, setGPAInfo] = React.useState({
-    cumulativeGPA: 0,
-    totalCredits: 0,
-  });
-
   useEffect(() => {
     const fetchStudentInfo = async () => {
+      setLoading(true); // Set loading to true before fetching data
+
       if (userId) {
         const studentInfo = await getStudentInfo(userId);
         console.log(studentInfo);
@@ -67,8 +69,9 @@ const TranscriptView: React.FC = () => {
           }));
           setTranscriptData(transcriptData);
 
+          const gpa = calculateGPA(transcriptData);
           setGPAInfo({
-            cumulativeGPA: calculateGPA(transcriptData) || 0,
+            cumulativeGPA: gpa !== null ? parseFloat(gpa.toFixed(1)) : 0,
             totalCredits: transcriptData.reduce(
               (acc, course) => acc + course.credits,
               0,
@@ -76,11 +79,17 @@ const TranscriptView: React.FC = () => {
           });
         }
       }
+
+      setLoading(false); // Set loading to false after fetching data
     };
     fetchStudentInfo();
-
-    // Calculate GPA
   }, [userId]);
+
+  if (loading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <Box

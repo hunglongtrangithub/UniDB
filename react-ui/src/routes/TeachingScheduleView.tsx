@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { getInstructorTeachingSchedule } from "../services/courses";
+import LoadingScreen from "../components/LoadingScreen";
 
 // Define the type for schedule data
 interface Schedule {
@@ -34,23 +35,22 @@ const TeachingScheduleView: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const [scheduleData, setScheduleData] = useState<Record<string, Schedule[]>>(
-    {},
+    {}
   );
-  const [semesters, setSemesters] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [selectedSemester, setSelectedSemester] =
-    useState<keyof typeof scheduleData>("");
-  console.log(selectedSemester);
-  const [schedule, setSchedule] = useState<Schedule[]>([] as Schedule[]);
+  const [semesters, setSemesters] = useState<{ value: string; label: string }[]>(
+    []
+  );
+  const [selectedSemester, setSelectedSemester] = useState<string>("");
+  const [schedule, setSchedule] = useState<Schedule[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   useEffect(() => {
     const fetchTeachingSchedule = async () => {
+      setLoading(true); // Set loading to true before fetching data
+
       if (userId) {
         const teachingSchedule = await getInstructorTeachingSchedule(userId);
         if (teachingSchedule) {
-          console.log(teachingSchedule);
           const scheduleData: Record<string, Schedule[]> = {};
           const semesters: { value: string; label: string }[] = [];
 
@@ -71,24 +71,33 @@ const TeachingScheduleView: React.FC = () => {
             };
             scheduleData[semester].push(schedule);
           });
-          console.log(scheduleData);
 
           setScheduleData(scheduleData);
           setSemesters(semesters);
-          setSelectedSemester(semesters[0].value);
-          setSchedule(scheduleData[semesters[0].value]);
+
+          if (semesters.length > 0) {
+            setSelectedSemester(semesters[0].value);
+            setSchedule(scheduleData[semesters[0].value]);
+          }
         }
       }
+
+      setLoading(false); // Set loading to false after fetching data
     };
     fetchTeachingSchedule();
   }, [userId]);
 
-  console.log(schedule);
   const handleSemesterChange = (event: SelectChangeEvent) => {
-    const semester = event.target.value as keyof typeof scheduleData; // Explicitly cast the key
+    const semester = event.target.value;
     setSelectedSemester(semester);
-    setSchedule(scheduleData[semester]); // Access using typed key
+    setSchedule(scheduleData[semester]);
   };
+
+  if (loading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <Box
