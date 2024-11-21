@@ -22,6 +22,8 @@ import {
 import { getDepartmentsByAdvisor } from "../services/users";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const GPASummaryReport: React.FC = () => {
   const navigate = useNavigate();
@@ -113,9 +115,41 @@ const GPASummaryReport: React.FC = () => {
   }, [selectedMajor, advisorDepartments]);
 
   const handleGenerateReport = () => {
-    alert(
-      `Generating report for Major: ${selectedMajor}, Semester: ${selectedSemester}`,
+    const doc = new jsPDF();
+
+    // Title
+    doc.setFontSize(18);
+    doc.text("GPA Summary Report", 14, 20);
+
+    // Advisor Department
+    doc.setFontSize(12);
+    doc.text(
+      `Advisor Departments: ${advisorDepartments.join(", ")}`,
+      14,
+      30,
     );
+
+    // Filters
+    doc.text(`Major: ${selectedMajor || "All Majors"}`, 14, 40);
+    doc.text(`Semester: ${selectedSemester || "All Semesters"}`, 14, 50);
+
+    // Table
+    const tableColumn = ["Major", "Highest GPA", "Lowest GPA", "Average GPA"];
+    const tableRows = reportData.map((row) => [
+      row.major,
+      row.highestGPA ?? "N/A",
+      row.lowestGPA ?? "N/A",
+      row.averageGPA ?? "N/A",
+    ]);
+
+    doc.autoTable({
+      startY: 60,
+      head: [tableColumn],
+      body: tableRows,
+    });
+
+    // Save the PDF
+    doc.save("GPA_Summary_Report.pdf");
   };
 
   return (
@@ -131,6 +165,13 @@ const GPASummaryReport: React.FC = () => {
     >
       <Typography variant="h4" align="center" gutterBottom>
         GPA Summary Report
+      </Typography>
+
+      <Typography gutterBottom>
+        <strong>Departments:</strong>{" "}
+        {advisorDepartments.length > 0
+          ? advisorDepartments.join(", ")
+          : "No departments assigned."}
       </Typography>
 
       {/* Filter Section */}
