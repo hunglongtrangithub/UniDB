@@ -12,6 +12,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
+import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,15 +29,17 @@ const WhatIfGPAAnalysis: React.FC = () => {
   const [courses, setCourses] = useState([
     { course: "", credits: 0, grade: "" },
   ]); // Hypothetical courses
-
   const [courseCreditMap, setCourseCreditMap] = useState<{
     [key: string]: number;
   }>({});
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   const userId = useSelector((state: RootState) => state.user.userId);
 
   useEffect(() => {
     async function fetch() {
+      setLoading(true); // Set loading to true before fetching data
+
       if (userId) {
         const enrollments = await getStudentCourseEnrollments(userId);
         if (enrollments) {
@@ -60,6 +63,8 @@ const WhatIfGPAAnalysis: React.FC = () => {
           }, {}),
         );
       }
+
+      setLoading(false); // Set loading to false after fetching data
     }
     fetch();
   }, [userId]);
@@ -82,7 +87,6 @@ const WhatIfGPAAnalysis: React.FC = () => {
     field: "course" | "grade", // Only course and grade are editable
     value: any,
   ) => {
-    // console.log(index, field, value);
     const updatedCourses = [...courses];
     updatedCourses[index] = {
       ...updatedCourses[index], // Spread existing course data
@@ -92,13 +96,16 @@ const WhatIfGPAAnalysis: React.FC = () => {
           ? courseCreditMap[value] || 0
           : updatedCourses[index].credits, // Update credits
     };
-    console.log(updatedCourses);
     setCourses(updatedCourses);
     const calculatedGPA = calculateGPA(updatedCourses);
-    if (calculatedGPA !== null) {
-      setNewGPA(parseFloat(calculatedGPA.toFixed(2)));
-    }
+    setNewGPA(calculatedGPA !== null ? parseFloat(calculatedGPA.toFixed(2)) : null);
   };
+
+  if (loading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <Box sx={{ padding: 4, maxWidth: "800px", margin: "0 auto" }}>

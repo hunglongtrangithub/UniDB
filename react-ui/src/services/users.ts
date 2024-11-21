@@ -17,13 +17,13 @@ export const getStudentInfo = async (studentId: string) => {
       )
     `,
     )
-    .eq("id", studentId).single();
+    .eq("id", studentId)
+    .single();
 
   if (studentError) {
     console.error("Error fetching student:", studentError.message);
     return null;
   }
-  console.log(student.majors.name);
   const studentInfo = {
     university_number: student.university_number,
     first_name: student.users.first_name,

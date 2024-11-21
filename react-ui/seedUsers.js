@@ -111,12 +111,15 @@ async function seedDatabase() {
 
     // Course Offerings
     const courseOfferings = [
+      // Courses for Instructor 4 (Department 1)
       { course_id: 1, semester_id: 1, instructor_id: getUserById(4), schedule: { days: "MW", time: "10:00-11:00" }, room_id: 1 },
       { course_id: 2, semester_id: 1, instructor_id: getUserById(4), schedule: { days: "MW", time: "11:00-12:00" }, room_id: 2 },
       { course_id: 3, semester_id: 1, instructor_id: getUserById(4), schedule: { days: "MW", time: "12:00-13:00" }, room_id: 3 },
+      // Courses for Instructor 5 (Department 2)
       { course_id: 4, semester_id: 1, instructor_id: getUserById(5), schedule: { days: "TR", time: "10:00-11:00" }, room_id: 4 },
       { course_id: 5, semester_id: 1, instructor_id: getUserById(5), schedule: { days: "TR", time: "11:00-12:00" }, room_id: 5 },
       { course_id: 6, semester_id: 1, instructor_id: getUserById(5), schedule: { days: "TR", time: "12:00-13:00" }, room_id: 6 },
+      // Courses for Instructor 6 (Department 3)
       { course_id: 7, semester_id: 1, instructor_id: getUserById(6), schedule: { days: "WF", time: "10:00-11:00" }, room_id: 7 },
       { course_id: 8, semester_id: 1, instructor_id: getUserById(6), schedule: { days: "WF", time: "11:00-12:00" }, room_id: 8 },
       { course_id: 9, semester_id: 1, instructor_id: getUserById(6), schedule: { days: "WF", time: "12:00-13:00" }, room_id: 9 },
@@ -126,16 +129,31 @@ async function seedDatabase() {
 
     // Course Enrollments
     const courseEnrollments = [
+      // CS 101 (Alice, Bob)
       { student_id: getUserById(1), course_offering_id: 1, grade: "I" }, // Alice enrolled in CS 101
+      { student_id: getUserById(2), course_offering_id: 1, grade: "A" }, // Bob enrolled in CS 101
+    
+      // CS 102 (Alice, Charlie)
       { student_id: getUserById(1), course_offering_id: 2, grade: "A" }, // Alice enrolled in CS 102
-      { student_id: getUserById(1), course_offering_id: 3, grade: "B" }, // Alice enrolled in CS 103
+      { student_id: getUserById(3), course_offering_id: 2, grade: "B" }, // Charlie enrolled in CS 102
+    
+      // IT 101 (Bob, Charlie)
       { student_id: getUserById(2), course_offering_id: 4, grade: "I" }, // Bob enrolled in IT 101
+      { student_id: getUserById(3), course_offering_id: 4, grade: "A" }, // Charlie enrolled in IT 101
+    
+      // IT 102 (Alice, Bob)
+      { student_id: getUserById(1), course_offering_id: 5, grade: "B" }, // Alice enrolled in IT 102
       { student_id: getUserById(2), course_offering_id: 5, grade: "A" }, // Bob enrolled in IT 102
-      { student_id: getUserById(2), course_offering_id: 6, grade: "B" }, // Bob enrolled in IT 103
+    
+      // CY 101 (Charlie, Alice)
       { student_id: getUserById(3), course_offering_id: 7, grade: "I" }, // Charlie enrolled in CY 101
-      { student_id: getUserById(3), course_offering_id: 8, grade: "A" }, // Charlie enrolled in CY 102
-      { student_id: getUserById(3), course_offering_id: 9, grade: "B" }, // Charlie enrolled in CY 103
+      { student_id: getUserById(1), course_offering_id: 7, grade: "A" }, // Alice enrolled in CY 101
+    
+      // CY 103 (Bob, Charlie)
+      { student_id: getUserById(2), course_offering_id: 9, grade: "B" }, // Bob enrolled in CY 103
+      { student_id: getUserById(3), course_offering_id: 9, grade: "A" }, // Charlie enrolled in CY 103
     ];
+    
     await supabase.from('course_enrollments').insert(courseEnrollments);
     console.log('Seeded course_enrollments');
 

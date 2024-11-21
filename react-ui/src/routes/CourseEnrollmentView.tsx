@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -15,38 +15,91 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getInstructorCourseEnrollments } from "../services/courses";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import LoadingScreen from "../components/LoadingScreen";
+
+// Define types for enrollment data
+interface Enrollment {
+  studentId: string;
+  name: string;
+  grade: string;
+}
+
+interface CourseOption {
+  value: string;
+  label: string;
+}
 
 const CourseEnrollmentView: React.FC = () => {
   const navigate = useNavigate();
+  const instructorId = useSelector((state: RootState) => state.user.userId);
 
-  // Sample data for course offerings and enrollment
-  const courses = [
-    { value: "cs101_fall2023", label: "CS101 - Fall 2023" },
-    { value: "cs202_spring2024", label: "CS202 - Spring 2024" },
-  ];
+  const [courses, setCourses] = useState<CourseOption[]>([]);
+  const [enrollmentData, setEnrollmentData] = useState<
+    Record<string, Enrollment[]>
+  >({});
+  const [selectedCourse, setSelectedCourse] = useState<string>("");
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const enrollmentData = {
-    cs101_fall2023: [
-      { studentId: "12345678", name: "John Doe", status: "Enrolled" },
-      { studentId: "87654321", name: "Jane Smith", status: "Enrolled" },
-    ],
-    cs202_spring2024: [
-      { studentId: "11223344", name: "Alice Johnson", status: "Enrolled" },
-      { studentId: "44332211", name: "Bob Brown", status: "Enrolled" },
-    ],
-  };
+  useEffect(() => {
+    const fetchCourseEnrollments = async () => {
+      if (!instructorId) return;
 
-  const [selectedCourse, setSelectedCourse] =
-    useState<keyof typeof enrollmentData>("cs101_fall2023");
-  const [enrollments, setEnrollments] = useState(
-    enrollmentData[selectedCourse],
-  );
+      setLoading(true);
+
+      const courseEnrollments =
+        await getInstructorCourseEnrollments(instructorId);
+      console.log(courseEnrollments);
+      if (courseEnrollments) {
+        const courseOptions: CourseOption[] = [];
+        const enrollmentMap: Record<string, Enrollment[]> = {};
+
+        courseEnrollments.forEach((offering: any) => {
+          const courseLabel = `${offering.courses.prefix} ${offering.courses.number} - ${offering.semesters.season} ${offering.semesters.year}`;
+          const courseValue = `${offering.courses.prefix}${offering.courses.number}_${offering.semesters.year}_${offering.semesters.season}`;
+
+          courseOptions.push({ value: courseValue, label: courseLabel });
+
+          const enrollments: Enrollment[] = offering.course_enrollments.map(
+            (enrollment: any) => ({
+              studentId: enrollment.students.university_number,
+              name: `${enrollment.students.users.first_name} ${enrollment.students.users.last_name}`,
+              grade: enrollment.grade || "N/A",
+            }),
+          );
+
+          enrollmentMap[courseValue] = enrollments;
+        });
+
+        setCourses(courseOptions);
+        setEnrollmentData(enrollmentMap);
+
+        if (courseOptions.length > 0) {
+          setSelectedCourse(courseOptions[0].value);
+          setEnrollments(enrollmentMap[courseOptions[0].value]);
+        }
+      }
+
+      setLoading(false);
+    };
+
+    fetchCourseEnrollments();
+  }, [instructorId]);
 
   const handleCourseChange = (event: SelectChangeEvent) => {
-    const course = event.target.value as keyof typeof enrollmentData;
+    const course = event.target.value;
     setSelectedCourse(course);
     setEnrollments(enrollmentData[course]);
   };
+
+  if (loading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <Box
@@ -94,7 +147,7 @@ const CourseEnrollmentView: React.FC = () => {
                 <strong>Name</strong>
               </TableCell>
               <TableCell>
-                <strong>Enrollment Status</strong>
+                <strong>Grade</strong>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -103,7 +156,7 @@ const CourseEnrollmentView: React.FC = () => {
               <TableRow key={index}>
                 <TableCell>{row.studentId}</TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.status}</TableCell>
+                <TableCell>{row.grade}</TableCell>
               </TableRow>
             ))}
           </TableBody>
