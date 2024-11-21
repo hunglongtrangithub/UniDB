@@ -71,7 +71,7 @@ const StudentEnrollmentForm: React.FC = () => {
         courseOfferings.forEach((offering) => {
           courseOptions.push({
             id: offering.id,
-            label: `${offering.courses.prefix} ${offering.courses.number} - ${offering.semesters.season} ${offering.semesters.year}`,
+            label: `${offering.courses.prefix} ${offering.courses.number}: ${offering.courses.name} - ${offering.semesters.season} ${offering.semesters.year}`,
             capacity: offering.rooms.capacity,
             enrolled: offering.course_enrollments.length,
           });
@@ -85,12 +85,12 @@ const StudentEnrollmentForm: React.FC = () => {
 
   useEffect(() => {
     const fetchStudentInfo = async () => {
-      setSuccessMessage(null);
       if (!studentSearch) {
         setErrorMessage(null);
         setStudentInfo(null);
         return;
       }
+      setSuccessMessage(null);
       if (studentSearch.match(/^U[0-9]{8}$/)) {
         setLoading(true);
 
@@ -163,6 +163,7 @@ const StudentEnrollmentForm: React.FC = () => {
     }
 
     // E2: Duplicate Enrollment
+    console.log(studentEnrollments, selectedCourse);
     if (
       studentEnrollments.some(
         (e: any) => e.course_offering_id === selectedCourse.id,
@@ -265,7 +266,7 @@ const StudentEnrollmentForm: React.FC = () => {
           onChange={(e) =>
             setSelectedCourse(
               courseOptions.find((course) => course.id === e.target.value) ||
-                null,
+              null,
             )
           }
         >
