@@ -71,7 +71,8 @@ VALUES
 
 -- SEMESTERS
 INSERT INTO public.semesters (year, season)
-VALUES (2024, 'F');
+VALUES (2024, 'F'),
+(2024, 'S');
 
 -- ROOMS
 INSERT INTO public.rooms (building, room_number, capacity)

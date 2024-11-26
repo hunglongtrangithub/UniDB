@@ -55,7 +55,7 @@ const TranscriptView: React.FC = () => {
           setStudentInfo({
             name: `${studentInfo.first_name} ${studentInfo.last_name}`,
             id: studentInfo.university_number,
-            major: studentInfo.major,
+            major: studentInfo.major_name,
           });
         }
 

@@ -6,6 +6,7 @@ const supabase = createClient(supabaseUrl, serviceRoleKey);
 
 async function seedDatabase() {
   try {
+    let data, error;
     const { data: { users: listedUsers }, error: listUsersError } = await supabase.auth.admin.listUsers()
     if (listUsersError) {
       throw new Error(listUsersError.message);
@@ -67,10 +68,7 @@ async function seedDatabase() {
       { id: getUserById(2), university_number: 'U23456789', major_id: 2 },
       { id: getUserById(3), university_number: 'U34567890', major_id: 3 },
     ];
-    let { error } = await supabase.from('students').insert(students);
-    if (error) {
-      throw new Error(error.message);
-    }
+    await supabase.from('students').insert(students);
     console.log('Seeded students');
 
     // Instructors
@@ -123,8 +121,23 @@ async function seedDatabase() {
       { course_id: 7, semester_id: 1, instructor_id: getUserById(6), schedule: { days: "WF", time: "10:00-11:00" }, room_id: 7 },
       { course_id: 8, semester_id: 1, instructor_id: getUserById(6), schedule: { days: "WF", time: "11:00-12:00" }, room_id: 8 },
       { course_id: 9, semester_id: 1, instructor_id: getUserById(6), schedule: { days: "WF", time: "12:00-13:00" }, room_id: 9 },
+      // Additional courses for semester_id 2
+      { course_id: 1, semester_id: 2, instructor_id: getUserById(4), schedule: { days: "MW", time: "10:00-11:00" }, room_id: 1 },
+      { course_id: 2, semester_id: 2, instructor_id: getUserById(4), schedule: { days: "MW", time: "11:00-12:00" }, room_id: 2 },
+      // { course_id: 3, semester_id: 2, instructor_id: getUserById(4), schedule: { days: "MW", time: "12:00-13:00" }, room_id: 3 },
+
+      { course_id: 4, semester_id: 2, instructor_id: getUserById(5), schedule: { days: "TR", time: "10:00-11:00" }, room_id: 4 },
+      { course_id: 5, semester_id: 2, instructor_id: getUserById(5), schedule: { days: "TR", time: "11:00-12:00" }, room_id: 5 },
+      // { course_id: 6, semester_id: 2, instructor_id: getUserById(5), schedule: { days: "TR", time: "12:00-13:00" }, room_id: 6 },
+
+      { course_id: 7, semester_id: 2, instructor_id: getUserById(6), schedule: { days: "WF", time: "10:00-11:00" }, room_id: 7 },
+      { course_id: 8, semester_id: 2, instructor_id: getUserById(6), schedule: { days: "WF", time: "11:00-12:00" }, room_id: 8 },
+      // { course_id: 9, semester_id: 2, instructor_id: getUserById(6), schedule: { days: "WF", time: "12:00-13:00" }, room_id: 9 },
     ];
-    await supabase.from('course_offerings').insert(courseOfferings);
+    ({data, error} = await supabase.from('course_offerings').insert(courseOfferings));
+    if (error) {
+      throw new Error(error.message);
+    }
     console.log('Seeded course_offerings');
 
     // Course Enrollments
@@ -154,7 +167,10 @@ async function seedDatabase() {
       { student_id: getUserById(3), course_offering_id: 9, grade: "A" }, // Charlie enrolled in CY 103
     ];
     
-    await supabase.from('course_enrollments').insert(courseEnrollments);
+    ({data, error} = await supabase.from('course_enrollments').insert(courseEnrollments));
+    if (error) {
+      throw new Error(error.message);
+    }
     console.log('Seeded course_enrollments');
 
     // try to retrieve the tables and log the number of rows in each
