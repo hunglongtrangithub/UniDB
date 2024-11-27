@@ -30,40 +30,34 @@ import {
 import { RootState } from "../store";
 
 interface Department {
-  id: string;
   name: string;
   building: string;
   office: string;
 }
 
 interface Student {
-  id: string;
   university_number: string;
   first_name: string;
   last_name: string;
-  major_id: string;
+  major_name: string;
 }
 
 interface Instructor {
-  id: string;
   first_name: string;
   last_name: string;
 }
 
 interface Advisor {
-  id: string;
   first_name: string;
   last_name: string;
 }
 
 interface Major {
-  id: string;
   name: string;
   is_unique: boolean;
 }
 
 interface Course {
-  id: string;
   prefix: string;
   number: string;
   name: string;
@@ -71,7 +65,6 @@ interface Course {
 }
 
 interface StaffMember {
-  id: string;
   first_name: string;
   last_name: string;
 }
@@ -81,7 +74,7 @@ const DepartmentReport: React.FC = () => {
   const staffId = useSelector((state: RootState) => state.user.userId);
   const [department, setDepartment] = useState<Department | null>(null);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [staff, setStaff] = useState<StaffMember | null>(null);
+  const [staff, setStaff] = useState<StaffMember[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [advisors, setAdvisors] = useState<Advisor[]>([]);
@@ -126,7 +119,7 @@ const DepartmentReport: React.FC = () => {
         ]);
 
         setCourses(coursesData || []);
-        setStaff(staffData || null);
+        setStaff(staffData || []);
         setStudents(studentsData || []);
         setInstructors(instructorsData || []);
         setAdvisors(advisorsData || []);
@@ -205,8 +198,8 @@ const DepartmentReport: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {courses.map((course) => (
-                    <TableRow key={course.id}>
+                  {courses.map((course, idx) => (
+                    <TableRow key={idx}>
                       <TableCell>
                         {course.prefix} {course.number}
                       </TableCell>
@@ -229,15 +222,26 @@ const DepartmentReport: React.FC = () => {
           <Typography variant="h6">Staff Member</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {staff ? (
+          {staff.length > 0 ? (
             <TableContainer component={Paper}>
               <Table>
-                <TableBody>
+                <TableHead>
                   <TableRow>
                     <TableCell>
-                      {staff.first_name} {staff.last_name}
+                      <strong>First Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Last Name</strong>
                     </TableCell>
                   </TableRow>
+                </TableHead>
+                <TableBody>
+                  {staff.map((staffMember, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell>{staffMember.first_name}</TableCell>
+                      <TableCell>{staffMember.last_name}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -254,57 +258,36 @@ const DepartmentReport: React.FC = () => {
         </AccordionSummary>
         <AccordionDetails>
           {students.length > 0 ? (
-            students.map((student) => (
-              <Box key={student.id} sx={{ marginBottom: 2 }}>
-                <Typography variant="subtitle1">
-                  {student.first_name} {student.last_name} - University Number:{" "}
-                  {student.university_number}
-                </Typography>
-                {/* Course Enrollments
-                {student.course_enrollments &&
-                  student.course_enrollments.length > 0 && (
-                    <TableContainer component={Paper} sx={{ marginTop: 1 }}>
-                      <Table size="small">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>
-                              <strong>Course</strong>
-                            </TableCell>
-                            <TableCell>
-                              <strong>Semester</strong>
-                            </TableCell>
-                            <TableCell>
-                              <strong>Credits</strong>
-                            </TableCell>
-                            <TableCell>
-                              <strong>Grade</strong>
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {student.course_enrollments.map((enrollment, idx) => (
-                            <TableRow key={idx}>
-                              <TableCell>
-                                {enrollment.course_offerings.courses.prefix}{" "}
-                                {enrollment.course_offerings.courses.number} -{" "}
-                                {enrollment.course_offerings.courses.name}
-                              </TableCell>
-                              <TableCell>
-                                {enrollment.course_offerings.semesters.season}{" "}
-                                {enrollment.course_offerings.semesters.year}
-                              </TableCell>
-                              <TableCell>
-                                {enrollment.course_offerings.courses.credits}
-                              </TableCell>
-                              <TableCell>{enrollment.grade || "N/A"}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )} */}
-              </Box>
-            ))
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <strong>First Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Last Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>University Number</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong> Major</strong>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {students.map((student, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell>{student.first_name}</TableCell>
+                      <TableCell>{student.last_name}</TableCell>
+                      <TableCell>{student.university_number}</TableCell>
+                      <TableCell>{student.major_name}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           ) : (
             <Typography>No students available.</Typography>
           )}
@@ -318,134 +301,28 @@ const DepartmentReport: React.FC = () => {
         </AccordionSummary>
         <AccordionDetails>
           {instructors.length > 0 ? (
-            instructors.map((instructor) => (
-              <Box key={instructor.id} sx={{ marginBottom: 2 }}>
-                <Typography variant="subtitle1">
-                  {instructor.first_name} {instructor.last_name}
-                </Typography>
-                Teaching Schedule
-                {/* {instructor.teaching_schedule &&
-                  instructor.teaching_schedule.length > 0 && (
-                    <Box sx={{ marginTop: 1 }}>
-                      <Typography variant="subtitle2">
-                        Teaching Schedule:
-                      </Typography>
-                      <TableContainer component={Paper} sx={{ marginTop: 1 }}>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <strong>Course</strong>
-                              </TableCell>
-                              <TableCell>
-                                <strong>Semester</strong>
-                              </TableCell>
-                              <TableCell>
-                                <strong>Schedule</strong>
-                              </TableCell>
-                              <TableCell>
-                                <strong>Room</strong>
-                              </TableCell>
-                              <TableCell>
-                                <strong>Enrolled Students</strong>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {instructor.teaching_schedule.map(
-                              (scheduleItem, idx) => (
-                                <TableRow key={idx}>
-                                  <TableCell>
-                                    {scheduleItem.courses.prefix}{" "}
-                                    {scheduleItem.courses.number} -{" "}
-                                    {scheduleItem.courses.name}
-                                  </TableCell>
-                                  <TableCell>
-                                    {scheduleItem.semesters.season}{" "}
-                                    {scheduleItem.semesters.year}
-                                  </TableCell>
-                                  <TableCell>{scheduleItem.schedule}</TableCell>
-                                  <TableCell>
-                                    {scheduleItem.rooms.building}{" "}
-                                    {scheduleItem.rooms.room_number} (Capacity:{" "}
-                                    {scheduleItem.rooms.capacity})
-                                  </TableCell>
-                                  <TableCell>
-                                    {scheduleItem.course_enrollments.length}
-                                  </TableCell>
-                                </TableRow>
-                              ),
-                            )}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </Box>
-                  )} */}
-                {/* Course Enrollments */}
-                {/* {instructor.course_enrollments &&
-                  instructor.course_enrollments.length > 0 && (
-                    <Box sx={{ marginTop: 2 }}>
-                      <Typography variant="subtitle2">
-                        Course Enrollments:
-                      </Typography>
-                      {instructor.course_enrollments.map(
-                        (courseEnrollment, idx) => (
-                          <Box key={idx} sx={{ marginTop: 1 }}>
-                            <Typography variant="body2">
-                              {courseEnrollment.courses.prefix}{" "}
-                              {courseEnrollment.courses.number} -{" "}
-                              {courseEnrollment.courses.name} -{" "}
-                              {courseEnrollment.semesters.season}{" "}
-                              {courseEnrollment.semesters.year}
-                            </Typography>
-                            <TableContainer
-                              component={Paper}
-                              sx={{ marginTop: 1 }}
-                            >
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>
-                                      <strong>Student</strong>
-                                    </TableCell>
-                                    <TableCell>
-                                      <strong>University Number</strong>
-                                    </TableCell>
-                                    <TableCell>
-                                      <strong>Grade</strong>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {courseEnrollment.course_enrollments.map(
-                                    (enrollment, idx2) => (
-                                      <TableRow key={idx2}>
-                                        <TableCell>
-                                          {enrollment.students.users.first_name}{" "}
-                                          {enrollment.students.users.last_name}
-                                        </TableCell>
-                                        <TableCell>
-                                          {
-                                            enrollment.students
-                                              .university_number
-                                          }
-                                        </TableCell>
-                                        <TableCell>
-                                          {enrollment.grade || "N/A"}
-                                        </TableCell>
-                                      </TableRow>
-                                    ),
-                                  )}
-                                </TableBody>
-                              </Table>
-                            </TableContainer>
-                          </Box>
-                        ),
-                      )}
-                    </Box>
-                  )} */}
-              </Box>
-            ))
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <strong>First Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Last Name</strong>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {instructors.map((instructor, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{instructor.first_name}</TableCell>
+                      <TableCell>{instructor.last_name}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           ) : (
             <Typography>No instructors available.</Typography>
           )}
@@ -461,12 +338,21 @@ const DepartmentReport: React.FC = () => {
           {advisors.length > 0 ? (
             <TableContainer component={Paper}>
               <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <strong>First Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Last Name</strong>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
                   {advisors.map((advisor, index) => (
                     <TableRow key={index}>
-                      <TableCell>
-                        {advisor.first_name} {advisor.last_name}
-                      </TableCell>
+                      <TableCell>{advisor.first_name}</TableCell>
+                      <TableCell>{advisor.last_name}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -487,12 +373,21 @@ const DepartmentReport: React.FC = () => {
           {majors.length > 0 ? (
             <TableContainer component={Paper}>
               <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <strong>Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Is Unique</strong>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
-                  {majors.map((major) => (
-                    <TableRow key={major.id}>
-                      <TableCell>
-                        {major.name} {major.is_unique ? "(Unique)" : ""}
-                      </TableCell>
+                  {majors.map((major, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell>{major.name}</TableCell>
+                      <TableCell>{major.is_unique ? "Yes" : "No"}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -46,24 +46,24 @@ export const getDepartmentStaff = async (departmentId: string) => {
   const { data: staff, error: staffError } = await supabase
     .from("staff")
     .select(`
-      id,
       users (
         first_name,
         last_name
       )
     `)
-    .eq("department_id", departmentId).single();
+    .eq("department_id", departmentId);
 
   if (staffError) {
     console.error("Error fetching department staff:", staffError.message);
     return null;
   }
   console.log(staff);
-  const staffData = {
-    id: staff.id,
-    first_name: staff.users.first_name,
-    last_name: staff.users.last_name,
-  }
+  const staffData = staff.map((staff) => {
+    return {
+      first_name: staff.users.first_name,
+      last_name: staff.users.last_name,
+    };
+  });
   return staffData;
 }
 
@@ -71,17 +71,13 @@ export const getDepartmentStudents = async (departmentId: string) => {
   const { data: students, error: studentsError } = await supabase
     .from("students")
     .select(`
-      id,
       users (
         first_name,
         last_name
       ),
       university_number,
-      majors (
-        id,
-        name,
-        is_unique,
-        department_id
+      majors:majors!inner (
+        name
       )
     `)
     .eq("majors.department_id", departmentId);
@@ -90,15 +86,14 @@ export const getDepartmentStudents = async (departmentId: string) => {
     console.error("Error fetching department students:", studentsError.message);
     return null;
   }
-
+  console.log(students);
   const studentData = 
     students.map((student) => {
       return {
-        id: student.id,
         university_number: student.university_number,
         first_name: student.users.first_name,
         last_name: student.users.last_name,
-        major_id: student.major_id,
+        major_name: student.majors.name,
       };
     })
   return studentData;
@@ -108,7 +103,6 @@ export const getDepartmentInstructors = async (departmentId: string) => {
   const { data: instructors, error: instructorsError } = await supabase
     .from("instructors")
     .select(`
-      id,
       users (
         first_name,
         last_name
@@ -123,7 +117,6 @@ export const getDepartmentInstructors = async (departmentId: string) => {
 
   const instructorData = instructors.map((instructor) => {
       return {
-        id: instructor.id,
         first_name: instructor.users.first_name,
         last_name: instructor.users.last_name,
       };
@@ -138,7 +131,6 @@ export const getDepartmentAdvisors = async (departmentId: string) => {
     .select(`
       advisors (
         users (
-          id,
           first_name,
           last_name
         )
@@ -152,7 +144,6 @@ export const getDepartmentAdvisors = async (departmentId: string) => {
   }
   const advisorData = advisors.map((advisor) => {
     return {
-      id: advisor.advisors.users.id,
       first_name: advisor.advisors.users.first_name,
       last_name: advisor.advisors.users.last_name,
     };

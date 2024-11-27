@@ -24,8 +24,9 @@ const AddCourseForm: React.FC = () => {
     const fetchDepartment = async () => {
       if (!userId) return;
       const department = await getStaffDepartment(userId);
+      if (!department) return;
       console.log(department);
-      const departmentId = department?.departments.id || 0;
+      const departmentId = department.id || 0;
       setDepartmentId(departmentId);
     };
     fetchDepartment();
@@ -68,7 +69,18 @@ const AddCourseForm: React.FC = () => {
     }
 
     // Simulate successful course creation
-    setSuccessMessage("Course added successfully!");
+    const success = true; // Replace with real API call
+    if (!success) {
+      setErrorMessage("Error: Failed to add course.");
+      return;
+    } else {
+      setSuccessMessage("Course added successfully!");
+      // reset form fields
+      setCoursePrefix("");
+      setCourseNumber("");
+      setCourseCredits("");
+      setDescription("");
+    }
   };
 
   return (
