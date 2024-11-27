@@ -18,8 +18,8 @@ import { RootState } from "../store";
 import { getStudentInfo } from "../services/users";
 import { getStudentCourseEnrollments } from "../services/courses";
 import { calculateGPA } from "../utils/grades";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const TranscriptView: React.FC = () => {
   const navigate = useNavigate();
@@ -88,12 +88,12 @@ const TranscriptView: React.FC = () => {
   }, [userId]);
 
   const handleGenerateReport = () => {
-    console.log("Generating report...")
+    console.log("Generating report...");
     const doc = new jsPDF();
 
     // Add title
     doc.setFontSize(18);
-    doc.text('Academic Transcript', 14, 22);
+    doc.text("Academic Transcript", 14, 22);
 
     // Add student information
     doc.setFontSize(12);
@@ -102,8 +102,14 @@ const TranscriptView: React.FC = () => {
     doc.text(`Major: ${studentInfo.major}`, 14, 60);
 
     // Prepare table data
-    const tableColumn = ['Semester', 'Course', 'Course Name', 'Credits', 'Grade'];
-    const tableRows = transcriptData.map(row => [
+    const tableColumn = [
+      "Semester",
+      "Course",
+      "Course Name",
+      "Credits",
+      "Grade",
+    ];
+    const tableRows = transcriptData.map((row) => [
       row.semester,
       row.course,
       row.courseName,
@@ -124,7 +130,7 @@ const TranscriptView: React.FC = () => {
     doc.text(`Total Credits Earned: ${gpaInfo.totalCredits}`, 14, finalY + 10);
 
     // Save the PDF
-    doc.save('Academic_Transcript.pdf');
+    doc.save("Academic_Transcript.pdf");
   };
 
   if (loading) {

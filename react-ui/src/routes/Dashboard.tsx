@@ -70,7 +70,7 @@ const roleUseCases: Record<
       id: "UC08",
       title: "Generate Department Report",
       description: "Generate reports summarizing GPA and enrollment data.",
-      route: "/generate-department-report",
+      route: "/department-report",
     },
   ],
 };

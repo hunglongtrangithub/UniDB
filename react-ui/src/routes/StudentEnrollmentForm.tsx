@@ -266,7 +266,7 @@ const StudentEnrollmentForm: React.FC = () => {
           onChange={(e) =>
             setSelectedCourse(
               courseOptions.find((course) => course.id === e.target.value) ||
-              null,
+                null,
             )
           }
         >

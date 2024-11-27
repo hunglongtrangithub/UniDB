@@ -22,8 +22,7 @@ import {
 import { getDepartmentsByAdvisor } from "../services/users";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
 
 const GPASummaryReport: React.FC = () => {
   const navigate = useNavigate();
@@ -123,11 +122,7 @@ const GPASummaryReport: React.FC = () => {
 
     // Advisor Department
     doc.setFontSize(12);
-    doc.text(
-      `Advisor Departments: ${advisorDepartments.join(", ")}`,
-      14,
-      30,
-    );
+    doc.text(`Advisor Departments: ${advisorDepartments.join(", ")}`, 14, 30);
 
     // Filters
     doc.text(`Major: ${selectedMajor || "All Majors"}`, 14, 40);

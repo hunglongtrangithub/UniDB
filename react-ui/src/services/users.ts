@@ -80,13 +80,20 @@ export const getStaffDepartment = async (staffId: string) => {
   // get department for staff
   const { data: department, error } = await supabase
     .from("staff")
-    .select("departments (*)")
-    .eq("id", staffId).single();
+    .select("departments (id, name, building, office)")
+    .eq("id", staffId)
+    .single();
 
   if (error) {
     console.error("Error fetching department:", error.message);
     return null;
   }
-
-  return department;
-}
+  console.log(department);
+  const departmentData = {
+    id: department.departments.id,
+    name: department.departments.name,
+    building: department.departments.building,
+    office: department.departments.office,
+  }
+  return departmentData;
+};
